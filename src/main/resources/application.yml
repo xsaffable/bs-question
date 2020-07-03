@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  port: 8085
+  servlet:
+    context-path: /
+    session.timeout: 1800
+
+spring.thymeleaf:
+  cache: false
+  prefix: classpath:/templates/
+  check-template-location: true
+  suffix: .html
+  encoding: UTF-8
+  mode: HTML5
+
+mybatis:
+  type-aliases-package: com.demo.entity.po
+  mapper-locations: classpath:mybatis/*.xml

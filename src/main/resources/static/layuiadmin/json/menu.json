@@ -1,0 +1,57 @@
+{
+  "code": 0,
+  "msg": "",
+  "data":
+  [{
+    "name": "user_manage",
+    "title": "用户管理",
+    "icon": "layui-icon-user",
+    "list":
+    [{
+      "name": "user_manage",
+      "title": "普通用户管理"
+    }, {
+      "name": "manage_user_manage",
+      "title": "管理员管理"
+    }]}, {
+    "name": "basic_manage",
+    "title": "基本信息管理",
+    "icon": "layui-icon-template",
+    "list":
+    [{
+      "name": "question_type_manage",
+      "title": "问卷类型管理"
+    }, {
+      "name": "question_manage",
+      "title": "问卷管理"
+    }, {
+      "name": "system_notice_manage",
+      "title": "系统公告管理"
+    }]}, {
+    "name": "data_analysis",
+    "title": "数据分析",
+    "icon": "layui-icon-chart",
+    "list":
+    [{
+      "name": "question_type_analysis",
+      "title": "问卷类型分析"
+    }, {
+      "name": "question_hot_analysis",
+      "title": "问卷热点分析"
+    }, {
+      "name": "user_action_analysis",
+      "title": "用户行为分析"
+    }]}, {
+    "name": "system_monitor",
+    "title": "系统监控",
+    "icon": "layui-icon-set-fill",
+    "list":
+    [{
+      "name": "login_monitor",
+      "title": "登录监控"
+    }, {
+      "name": "online_monitor",
+      "title": "在线人数监控"
+    }]
+  }]
+}

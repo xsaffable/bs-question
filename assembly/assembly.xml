@@ -1,0 +1,33 @@
+<assembly>
+    <id>0</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <!-- add this,the dir ${finalName} is not exist -->
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>./lib</outputDirectory>
+            <scope>runtime</scope>
+            <useProjectArtifact>false</useProjectArtifact>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <fileSet>
+            <directory>bin</directory>
+            <outputDirectory>./bin</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/classes</directory>
+            <outputDirectory>./classes</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/lib</directory>
+            <outputDirectory>./lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>setting</directory>
+            <outputDirectory>./setting</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
