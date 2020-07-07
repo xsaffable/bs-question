@@ -91,7 +91,7 @@
 
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 <script src="../../static/layuiadmin/layui/layui.js"></script>
-<script src="../../static/js/request.js"></script>
+<script src="../../static/js/util/request.js"></script>
 <script>
     var loginUrl = "/login/login";
 
@@ -114,12 +114,11 @@
             // 请求登录接口
             reqNum = 1;
             requestAsync(loginUrl, null, function (data) {
-                if (data.code == 0) { // 登陆成功
-                    layer.msg(data.msg || "登录成功!", { icon: 6 });
-                    // 跳转到首页
-                    setTimeout(function () {
+                if (data.code == 0) { // 登录成功
+                    layer.msg(data.msg || "登录成功!", { icon: 6, time: 600 }, function () {
+                        // 跳转到首页
                         location.href = "/index";
-                    }, 500);
+                    });
                 }
             });
         });

@@ -20,7 +20,7 @@
     "list":
     [{
       "name": "question_type_manage",
-      "title": "问卷类型管理"
+      "title": "问卷分类管理"
     }, {
       "name": "question_manage",
       "title": "问卷管理"

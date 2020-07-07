@@ -1,7 +1,7 @@
 package com.demo.controller;
 
 import com.demo.common.response.BaseResponse;
-import org.springframework.stereotype.Controller;
+import com.demo.config.SessionFields;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
  * @description 登陆控制器
  * @date 2020/5/15 14:56
  */
-@Controller
+@RestController
 @RequestMapping("/login")
 public class LoginController {
 
@@ -19,14 +19,13 @@ public class LoginController {
      * 登录验证
      * @return 响应
      */
-    @ResponseBody
     @PostMapping("/login")
     public BaseResponse login(HttpSession session) {
         BaseResponse response = new BaseResponse();
 
         response.success("登录成功!");
-        // 放入session
-        session.setAttribute("username", "xxx");
+        // 把 username 放入 session
+        session.setAttribute(SessionFields.USERNAME, "xxx");
 
         return response;
     }
@@ -36,10 +35,14 @@ public class LoginController {
      * @return 响应
      */
     @RequestMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute("username");
+    public BaseResponse logout(HttpSession session) {
+        BaseResponse response = new BaseResponse();
 
-        return "redirect:/login";
+        response.success("退出成功!");
+        // 移除 session 中的 username
+        session.removeAttribute(SessionFields.USERNAME);
+
+        return response;
     }
 
 

@@ -24,14 +24,17 @@ layui.define(function(exports){
   admin.events.logout = function(){
     //执行退出接口
     admin.req({
-      url: layui.setter.base + 'json/user/logout.js'
+      url: '/login/logout'
       ,type: 'get'
       ,data: {}
       ,done: function(res){ //这里要说明一下：done 是只有 response 的 code 正常才会执行。而 succese 则是只要 http 为 200 就会执行
         
         //清空本地记录的 token，并跳转到登入页
         admin.exit(function(){
-          location.href = 'user/login.html';
+          layer.msg(res.msg || "退出成功!", { icon: 6, time: 500 }, function () {
+            // 跳转到登录页
+            location.href = "/login";
+          });
         });
       }
     });
