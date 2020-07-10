@@ -33,14 +33,11 @@
     "icon": "layui-icon-chart",
     "list":
     [{
-      "name": "question_type_analysis",
-      "title": "问卷类型分析"
-    }, {
-      "name": "question_hot_analysis",
-      "title": "问卷热点分析"
+      "name": "question_analysis",
+      "title": "问卷分析"
     }, {
       "name": "user_action_analysis",
-      "title": "用户行为分析"
+      "title": "用户分析"
     }]}, {
     "name": "system_monitor",
     "title": "系统监控",
@@ -50,8 +47,8 @@
       "name": "login_monitor",
       "title": "登录监控"
     }, {
-      "name": "online_monitor",
-      "title": "在线人数监控"
+      "name": "resource_monitor",
+      "title": "资源监控"
     }]
   }]
 }

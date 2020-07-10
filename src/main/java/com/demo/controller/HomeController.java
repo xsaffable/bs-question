@@ -86,10 +86,64 @@ public class HomeController {
         return "basic_manage/question/list";
     }
 
-    /** 问卷管理 form */
-    @RequestMapping("/basic_manage/q/form")
-    public String questionForm() {
-        return "basic_manage/question/listform";
+    /** 问卷管理 新增 form */
+    @RequestMapping("/basic_manage/q/add")
+    public String questionAddForm() {
+        return "basic_manage/question/addform";
+    }
+
+    /** 问卷管理 编辑 form */
+    @RequestMapping("/basic_manage/q/edit")
+    public String questionEditForm() {
+        return "basic_manage/question/editform";
+    }
+
+    /** 问卷管理 查看 form */
+    @RequestMapping("/basic_manage/q/detail")
+    public String questionDetailForm() {
+        return "basic_manage/question/detailform";
+    }
+
+    /** 系统公告管理 */
+    @RequestMapping("/basic_manage/notice/list")
+    public String noticeList() {
+        return "basic_manage/notice/list";
+    }
+
+    /** 系统公告管理 编辑 */
+    @RequestMapping("/basic_manage/notice/edit")
+    public String noticeEdit() {
+        return "basic_manage/notice/listform";
+    }
+
+    /** 问卷分析 */
+    @RequestMapping("/data_analysis/qanalysis")
+    public String qAnalysis() {
+        return "data_analysis/question_analysis";
+    }
+
+    /** 用户分析 */
+    @RequestMapping("/data_analysis/uanalysis")
+    public String uAnalysis() {
+        return "data_analysis/user_analysis";
+    }
+
+    /** 登录监控 */
+    @RequestMapping("/system_monitor/login_monitor")
+    public String loginMonitor() {
+        return "system_monitor/login_monitor";
+    }
+
+    /** 资源监控 */
+    @RequestMapping("/system_monitor/resource_monitor")
+    public String resourceMonitor() {
+        return "system_monitor/resource_monitor";
+    }
+
+    /** 问卷首页 */
+    @RequestMapping("/view/index")
+    public String viewIndex() {
+        return "view_index";
     }
 
 }

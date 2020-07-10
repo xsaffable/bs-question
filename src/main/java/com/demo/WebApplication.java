@@ -49,6 +49,7 @@ public class WebApplication extends SpringBootServletInitializer {
 					.excludePathPatterns("/login/login")
 					.excludePathPatterns("/login/logout")
 					.excludePathPatterns("/reg")
+					.excludePathPatterns("/view/index")
 					.excludePathPatterns("/static/**");
 		}
 

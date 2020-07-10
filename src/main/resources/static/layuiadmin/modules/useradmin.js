@@ -88,7 +88,7 @@ layui.define(['table', 'form'], function(exports){
       ,{field: 'email', title: '邮箱'}
       ,{field: 'role', title: '角色'}
       ,{field: 'jointime', title: '加入时间', sort: true}
-      ,{field: 'check', title:'审核状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
+      // ,{field: 'check', title:'审核状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
       ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
     ]]
     ,page: true

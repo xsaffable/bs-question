@@ -42,7 +42,7 @@ layui.define(function(exports) {
                     },
                     calculable: true,
                     legend: {
-                        data: ['访问量', '问卷新增量', '问卷填写量']
+                        data: ['访问量', '问卷新增量', '问卷填写人次']
                     },
 
                     xAxis: [
@@ -80,7 +80,7 @@ layui.define(function(exports) {
                             data: [850, 850, 800, 950, 1000, 950, 950, 1150, 1100, 1240, 1000, 950]
                         },
                         {
-                            name: '问卷填写量',
+                            name: '问卷填写人次',
                             type: 'line',
                             data: [870, 850, 850, 950, 1050, 1000, 980, 1150, 1000, 1300, 1150, 1000]
                         }
