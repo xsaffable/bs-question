@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.UserQTDao">
+
+    <resultMap type="com.demo.entity.po.UserQT" id="UserQTMap">
+        <result property="userQId" column="user_q_id" jdbcType="VARCHAR"/>
+        <result property="qid" column="qid" jdbcType="VARCHAR"/>
+        <result property="tid" column="tid" jdbcType="VARCHAR"/>
+        <result property="tOrder" column="t_order" jdbcType="INTEGER"/>
+        <result property="tTitle" column="t_title" jdbcType="VARCHAR"/>
+        <result property="ansId" column="ans_id" jdbcType="VARCHAR"/>
+        <result property="ansOrder" column="ans_order" jdbcType="INTEGER"/>
+        <result property="ansTitle" column="ans_title" jdbcType="VARCHAR"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserQTMap">
+        select
+          user_q_id, qid, tid, t_order, t_title, ans_id, ans_order, ans_title, createtime, updatetime
+        from questionnaire.user_q_t
+        where user_q_id = #{userQId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserQTMap">
+        select
+          user_q_id, qid, tid, t_order, t_title, ans_id, ans_order, ans_title, createtime, updatetime
+        from questionnaire.user_q_t
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserQTMap">
+        select
+          user_q_id, qid, tid, t_order, t_title, ans_id, ans_order, ans_title, createtime, updatetime
+        from questionnaire.user_q_t
+        <where>
+            <if test="userQId != null and userQId != ''">
+                and user_q_id = #{userQId}
+            </if>
+            <if test="qid != null and qid != ''">
+                and qid = #{qid}
+            </if>
+            <if test="tid != null and tid != ''">
+                and tid = #{tid}
+            </if>
+            <if test="tOrder != null">
+                and t_order = #{tOrder}
+            </if>
+            <if test="tTitle != null and tTitle != ''">
+                and t_title = #{tTitle}
+            </if>
+            <if test="ansId != null and ansId != ''">
+                and ans_id = #{ansId}
+            </if>
+            <if test="ansOrder != null">
+                and ans_order = #{ansOrder}
+            </if>
+            <if test="ansTitle != null and ansTitle != ''">
+                and ans_title = #{ansTitle}
+            </if>
+            <if test="createtime != null">
+                and createtime = #{createtime}
+            </if>
+            <if test="updatetime != null">
+                and updatetime = #{updatetime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userQId" useGeneratedKeys="true">
+        insert into questionnaire.user_q_t(t_order, t_title, ans_order, ans_title, createtime, updatetime)
+        values (#{tOrder}, #{tTitle}, #{ansOrder}, #{ansTitle}, #{createtime}, #{updatetime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update questionnaire.user_q_t
+        <set>
+            <if test="tOrder != null">
+                t_order = #{tOrder},
+            </if>
+            <if test="tTitle != null and tTitle != ''">
+                t_title = #{tTitle},
+            </if>
+            <if test="ansOrder != null">
+                ans_order = #{ansOrder},
+            </if>
+            <if test="ansTitle != null and ansTitle != ''">
+                ans_title = #{ansTitle},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime},
+            </if>
+        </set>
+        where user_q_id = #{userQId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from questionnaire.user_q_t where user_q_id = #{userQId}
+    </delete>
+
+</mapper>

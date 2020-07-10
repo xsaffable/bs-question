@@ -16,6 +16,12 @@ spring.thymeleaf:
   encoding: UTF-8
   mode: HTML5
 
+# 缓存配置
+# 最大缓存数量
+itf.cache.maxsize: 1000
+# 过期时间，单位: 分钟
+itf.cache.expiretime: 3
+
 mybatis:
   type-aliases-package: com.demo.entity.po
   mapper-locations: classpath:mybatis/*.xml

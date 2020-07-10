@@ -35,6 +35,11 @@ public enum ArgumentResponseEnum implements BusinessExceptionAssert {
      */
     BAD_DATE(1011, "时间格式错误"),
 
+    /**
+     * 验证失败
+     */
+    VERIFY_FAIL(1012, "验证码错误"),
+
 
     ;
 

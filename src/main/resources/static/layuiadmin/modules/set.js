@@ -48,55 +48,16 @@ layui.define(['form', 'upload'], function(exports){
     }
   });
   
-  //网站设置
-  form.on('submit(set_website)', function(obj){
-    layer.msg(JSON.stringify(obj.field));
-    
-    //提交修改
-    /*
-    admin.req({
-      url: ''
-      ,data: obj.field
-      ,success: function(){
-        
-      }
-    });
-    */
-    return false;
-  });
-  
-  //邮件服务
-  form.on('submit(set_system_email)', function(obj){
-    layer.msg(JSON.stringify(obj.field));
-    
-    //提交修改
-    /*
-    admin.req({
-      url: ''
-      ,data: obj.field
-      ,success: function(){
-        
-      }
-    });
-    */
-    return false;
-  });
-  
-  
+
   //设置我的资料
   form.on('submit(setmyinfo)', function(obj){
     layer.msg(JSON.stringify(obj.field));
-    
-    //提交修改
-    /*
-    admin.req({
-      url: ''
-      ,data: obj.field
-      ,success: function(){
-        
-      }
+
+    reqNum = 1;
+    requestAsync("/user/update", JSON.stringify(obj.field), function (data) {
+      console.log(data)
     });
-    */
+
     return false;
   });
 

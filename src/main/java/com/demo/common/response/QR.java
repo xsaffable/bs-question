@@ -13,23 +13,20 @@ import lombok.Setter;
 public class QR<T> extends BaseResponse {
 
     /**
-     * 总记录数量
+     * 总数量
      */
-    private int totalCount;
-
-    /**
-     * 页码
-     */
-    private int pageNo;
-
-    /**
-     * 每页数量
-     */
-    private int pageSize;
+    private long count;
 
     /**
      * 数据
      */
-    private T records;
+    private T data;
+
+    public void success(String msg, T data, long count) {
+        this.setCode(0);
+        this.setMsg(msg);
+        this.setData(data);
+        this.setCount(count);
+    }
 
 }

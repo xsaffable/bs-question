@@ -50,16 +50,27 @@ layui.define('form', function(exports){
       url: layui.setter.base + 'json/user/sms.js' //实际使用请改成服务端真实接口
     }
   });
-  
-  
-  
+
+
+  // 为url添加时间戳
+  function timestamp(url) {
+    var getTimestamp = new Date().getTime();
+    if (url.indexOf("?") > -1) {
+      url = url + "&timestamp=" + getTimestamp
+    } else {
+      url = url + "?timestamp=" + getTimestamp
+    }
+    return url;
+  }
   
   //更换图形验证码
   $body.on('click', '#LAY-user-get-vercode', function(){
     var othis = $(this);
-    this.src = 'https://www.oschina.net/action/user/captcha?t='+ new Date().getTime()
+    this.src = timestamp("/login/verifyCode");
+    // this.src = 'https://www.oschina.net/action/user/captcha?t='+ new Date().getTime()
+
   });
-  
+
   //对外暴露的接口
   exports('user', {});
 });

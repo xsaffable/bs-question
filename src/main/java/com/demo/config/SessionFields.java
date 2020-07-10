@@ -10,4 +10,10 @@ public interface SessionFields {
     /** 用户名 */
     String USERNAME = "username";
 
+    /** 验证码 */
+    String VERIFY_CODE = "verifyCode";
+
+    /** 角色id */
+    String ROLE_ID = "roleId";
+
 }

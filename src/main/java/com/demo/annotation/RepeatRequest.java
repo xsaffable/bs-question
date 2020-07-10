@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Sxs
+ * @author affable
  * @description 重复提交做缓存
  * @date 2020/6/11 16:49
  */

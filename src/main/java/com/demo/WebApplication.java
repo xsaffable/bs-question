@@ -46,8 +46,7 @@ public class WebApplication extends SpringBootServletInitializer {
 					.addPathPatterns("/**")
 					// 去除登陆页面跳转和登录接口
 					.excludePathPatterns("/login")
-					.excludePathPatterns("/login/login")
-					.excludePathPatterns("/login/logout")
+					.excludePathPatterns("/login/*")
 					.excludePathPatterns("/reg")
 					.excludePathPatterns("/view/index")
 					.excludePathPatterns("/static/**");

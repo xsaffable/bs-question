@@ -61,7 +61,13 @@ function requestAsync(url, jsonData, sucFunc, reqType, errFunc, compFunc, before
 		contentType: "application/json",
 		async: true,
 		data: jsonData,
-		success: sucFunc,
+		success: function (data) {
+			if (data.code === 0) {
+				sucFunc(data);
+			} else {
+				layer.msg(data.msg || "系统偷懒啦，请稍后再试", { icon: 5 });
+			}
+		},
 		complete: compFunc,
 		error: errFunc,
 		beforeSend: beforeFunc

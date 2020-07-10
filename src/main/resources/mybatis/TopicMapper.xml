@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.TopicDao">
+
+    <resultMap type="com.demo.entity.po.Topic" id="TopicMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="qId" column="q_id" jdbcType="VARCHAR"/>
+        <result property="order" column="order" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="ansId" column="ans_id" jdbcType="VARCHAR"/>
+        <result property="ansOrder" column="ans_order" jdbcType="INTEGER"/>
+        <result property="ansTitle" column="ans_title" jdbcType="VARCHAR"/>
+        <result property="ansText" column="ans_text" jdbcType="VARCHAR"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TopicMap">
+        select
+          id, q_id, order, title, type, ans_id, ans_order, ans_title, ans_text, createtime, updatetime
+        from questionnaire.topic
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TopicMap">
+        select
+          id, q_id, order, title, type, ans_id, ans_order, ans_title, ans_text, createtime, updatetime
+        from questionnaire.topic
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TopicMap">
+        select
+          id, q_id, order, title, type, ans_id, ans_order, ans_title, ans_text, createtime, updatetime
+        from questionnaire.topic
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="qId != null and qId != ''">
+                and q_id = #{qId}
+            </if>
+            <if test="order != null">
+                and order = #{order}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="ansId != null and ansId != ''">
+                and ans_id = #{ansId}
+            </if>
+            <if test="ansOrder != null">
+                and ans_order = #{ansOrder}
+            </if>
+            <if test="ansTitle != null and ansTitle != ''">
+                and ans_title = #{ansTitle}
+            </if>
+            <if test="ansText != null and ansText != ''">
+                and ans_text = #{ansText}
+            </if>
+            <if test="createtime != null">
+                and createtime = #{createtime}
+            </if>
+            <if test="updatetime != null">
+                and updatetime = #{updatetime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into questionnaire.topic(order, title, type, ans_order, ans_title, ans_text, createtime, updatetime)
+        values (#{order}, #{title}, #{type}, #{ansOrder}, #{ansTitle}, #{ansText}, #{createtime}, #{updatetime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update questionnaire.topic
+        <set>
+            <if test="order != null">
+                order = #{order},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="ansOrder != null">
+                ans_order = #{ansOrder},
+            </if>
+            <if test="ansTitle != null and ansTitle != ''">
+                ans_title = #{ansTitle},
+            </if>
+            <if test="ansText != null and ansText != ''">
+                ans_text = #{ansText},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from questionnaire.topic where id = #{id}
+    </delete>
+
+</mapper>

@@ -55,6 +55,21 @@ public interface Assert {
     }
 
     /**
+     * 判断字符串是否相同
+     * @param str 字符串
+     * @param str2 字符串2
+     */
+    default void assertEquals(String str, String str2, boolean ignoreCase) {
+        if (ignoreCase) {
+            str = StringUtils.lowerCase(str);
+            str2 = StringUtils.lowerCase(str2);
+        }
+        if (!StringUtils.equals(str, str2)) {
+            throw newException();
+        }
+    }
+
+    /**
      * 判断是否数字
      * @param str 字符串
      */
