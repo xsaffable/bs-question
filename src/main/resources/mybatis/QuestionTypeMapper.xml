@@ -52,8 +52,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into questionnaire.question_type(name, uid, createtime, updatetime)
-        values (#{name}, #{uid}, #{createtime}, #{updatetime})
+        insert into questionnaire.question_type(name, uid)
+        values (#{name}, #{uid})
     </insert>
 
     <!--通过主键修改数据-->

@@ -62,14 +62,14 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">邮箱</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="email" value="" lay-verify="email" autocomplete="off"
+                                <input id="email" type="text" name="email" value="" lay-verify="email" autocomplete="off"
                                        class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item layui-form-text">
                             <label class="layui-form-label">备注</label>
                             <div class="layui-input-block">
-                                <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                <textarea id="remarks" name="remarks" placeholder="请输入备注" class="layui-textarea"></textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -109,7 +109,6 @@
         reqNum = 1;
         // 加载数据
         requestAsync(getUserByUsernameUrl, JSON.stringify(param), function (data) {
-            console.log(data)
             if (data.data.role !== null) {
                 $("#role option[value='"+data.data.role+"']").attr("selected","selected");
             }
@@ -126,10 +125,10 @@
                 $("input[name='phoneNumber']").val(data.data.phoneNumber);
             }
             if (data.data.email !== null) {
-                $("#input[name='email']").val(data.data.email);
+                $("#email").val(data.data.email);
             }
             if (data.data.remarks !== null) {
-                $("#input[name='remarks']").val(data.data.remarks);
+                $("#remarks").val(data.data.remarks);
             }
 
             form.render();

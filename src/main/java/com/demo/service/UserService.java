@@ -48,11 +48,27 @@ public interface UserService {
     List<User> queryByUserLimit(User user, int page, int limit);
 
     /**
+     * 条件分页查询管理员
+     * @param user User
+     * @param page 页码
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<User> queryAdminByUserLimit(User user, int page, int limit);
+
+    /**
      * 总记录数
      * @param user User
      * @return long
      */
     long count(User user);
+
+    /**
+     * 管理员总记录数
+     * @param user User
+     * @return long
+     */
+    long countAdmin(User user);
 
     /**
      * 登录

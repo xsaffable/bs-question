@@ -51,11 +51,10 @@ layui.define(['form', 'upload'], function(exports){
 
   //设置我的资料
   form.on('submit(setmyinfo)', function(obj){
-    layer.msg(JSON.stringify(obj.field));
 
     reqNum = 1;
     requestAsync("/user/update", JSON.stringify(obj.field), function (data) {
-      console.log(data)
+      layer.msg(data.msg || "修改成功", { icon: 6 });
     });
 
     return false;

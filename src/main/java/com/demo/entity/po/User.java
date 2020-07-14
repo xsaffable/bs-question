@@ -1,5 +1,7 @@
 package com.demo.entity.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 import java.io.Serializable;
 import java.util.UUID;
@@ -56,10 +58,12 @@ public class User implements Serializable {
     /**
     * 创建时间
     */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createtime;
     /**
     * 更新时间
     */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp updatetime;
 
     public String getId() {

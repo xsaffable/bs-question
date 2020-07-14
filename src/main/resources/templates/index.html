@@ -94,7 +94,7 @@
                 <dd data-name="user_manage">
                   <a lay-href="/user_manage/user">普通用户管理</a>
                 </dd>
-                <dd data-name="manage_user_manage">
+                <dd th:if="${session.roleId} == 0" data-name="manage_user_manage">
                   <a lay-href="/admin_manage/user">管理员管理</a>
                 </dd>
               </dl>

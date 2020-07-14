@@ -122,7 +122,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> queryByUserLimit(User user, int page, int limit) {
         int offset = (page - 1) * limit;
+        user.setRole(UserFields.ROLE_USER);
         return this.userDao.queryByUserLimit(user, offset, limit);
+    }
+
+    /**
+     * 条件分页查询管理员
+     *
+     * @param user  User
+     * @param page  页码
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    @Override
+    public List<User> queryAdminByUserLimit(User user, int page, int limit) {
+        int offset = (page - 1) * limit;
+        // 查询普通管理员
+        user.setRole(UserFields.ROLE_ADMIN);
+        List<User> adminUsers = this.userDao.queryByUserLimit(user, offset, limit);
+        // 查询超级管理员
+        user.setRole(UserFields.ROLE_SUPER_ADMIN);
+        List<User> superUsers = this.userDao.queryByUserLimit(user, offset, limit);
+        adminUsers.addAll(superUsers);
+        return adminUsers;
     }
 
     /**
@@ -133,7 +155,23 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public long count(User user) {
+        user.setRole(UserFields.ROLE_USER);
         return this.userDao.count(user);
+    }
+
+    /**
+     * 管理员总记录数
+     *
+     * @param user User
+     * @return long
+     */
+    @Override
+    public long countAdmin(User user) {
+        user.setRole(UserFields.ROLE_ADMIN);
+        long count = this.userDao.count(user);
+        user.setRole(UserFields.ROLE_SUPER_ADMIN);
+        long superCount = this.userDao.count(user);
+        return count + superCount;
     }
 
     /**
@@ -159,7 +197,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(User user) {
         this.userDao.update(user);
-        return this.queryById(user.getId());
+
+        return this.queryByUsername(user.getUsername());
     }
 
     /**

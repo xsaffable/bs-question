@@ -9,14 +9,28 @@ layui.define(['table', 'form'], function (exports) {
     //分类管理
     table.render({
         elem: '#LAY-app-content-tags'
-        , url: layui.setter.base + 'json/content/tags.js' //模拟接口
-        , cols: [[
+        ,url: '/basic/qtype/list' //模拟接口
+        ,method: 'post'
+        ,contentType: 'application/json'
+        ,parseData: function(res){ //res 即为原始返回的数据
+
+            if (res.data && res.data.length === 0) {
+                return {"code": 201, "msg": "无数据"};
+            }
+            return {
+                "code": 0, //解析接口状态
+                "msg": res.msg, //解析提示文本
+                "count": res.count, //解析数据长度
+                "data": res.code === 0 ? res.data : [] //解析数据列表
+            };
+        }
+        ,cols: [[
             {type: 'numbers', fixed: 'left'}
             , {field: 'id', width: 100, title: 'ID', sort: true}
-            , {field: 'tags', title: '分类名', minWidth: 100}
+            , {field: 'name', title: '分类名', minWidth: 100}
             , {title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#layuiadmin-app-cont-tagsbar'}
         ]]
-        , text: '对不起，加载出现异常！'
+        ,text: '对不起，加载出现异常！'
     });
 
     //监听工具条
@@ -24,8 +38,11 @@ layui.define(['table', 'form'], function (exports) {
         var data = obj.data;
         if (obj.event === 'del') {
             layer.confirm('确定删除此分类？', function (index) {
-                obj.del();
-                layer.close(index);
+                requestAsync("/basic/qtype/delete/"+data.id, null, function (data) {
+                    parent.layer.msg(data.msg || "删除成功", { icon: 6, time: 500 });
+                    table.reload('LAY-app-content-tags');
+                    layer.close(index);
+                })
             });
         } else if (obj.event === 'edit') {
             var tr = $(obj.tr);

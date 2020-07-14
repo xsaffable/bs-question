@@ -195,12 +195,6 @@
             <if test="role != null">
                 role = #{role},
             </if>
-            <if test="createtime != null">
-                createtime = #{createtime},
-            </if>
-            <if test="updatetime != null">
-                updatetime = #{updatetime},
-            </if>
         </set>
         where username = #{username}
     </update>
