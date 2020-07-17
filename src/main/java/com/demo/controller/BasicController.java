@@ -339,4 +339,35 @@ public class BasicController {
         return response;
     }
 
+    /**
+     * 更新公告
+     * @param n Notice
+     * @return BaseResponse
+     */
+    @PostMapping("/n/update")
+    public BaseResponse nUpdate(@RequestBody Notice n) {
+        BaseResponse response = new BaseResponse();
+        this.noticeService.update(n);
+        response.success("更新成功");
+        return response;
+    }
+
+    /**
+     * 删除公告
+     * @param id String
+     * @return BaseResponse
+     */
+    @PostMapping("/n/delete/{id}")
+    public BaseResponse nDelete(@PathVariable("id") String id) {
+        BaseResponse response = new BaseResponse();
+        boolean b = this.noticeService.deleteById(id);
+        if (b) {
+            response.success("删除成功");
+        } else {
+            response.fail("删除失败");
+        }
+
+        return response;
+    }
+
 }

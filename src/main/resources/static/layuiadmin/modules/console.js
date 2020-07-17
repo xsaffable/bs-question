@@ -119,7 +119,7 @@ layui.define(function(exports) {
                 yAxis : [
                     {
                         type : 'category',
-                        data : ['周一','周二','周三','周四','周五','周六','周日']
+                        data : ['7月8日','7月9日','7月10日','7月11日','7月12日','7月13日','7月14日']
                     }
                 ],
                 series : [

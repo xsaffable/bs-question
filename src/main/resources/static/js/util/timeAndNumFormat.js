@@ -1,22 +1,6 @@
 
 
 /**
- * 处理数据中的 "null"
- * @param dArr 待处理数据
- */
-function deal_null(dArr) {
-    for (var i in dArr) {
-        var d = dArr[i];
-        for (var k in d) {
-            if (d[k] == "null") {
-                d[k] = "【数据格式有误！】";
-            }
-        }
-    }
-    return dArr;
-}
-
-/**
  * 格式化数字,把数字转化为每三位一个逗号的字符串
  * @param num
  * @returns {string|*}
@@ -34,6 +18,24 @@ function formatNum(num) {
         b = b.replace(re, "$1,$2$3");
     }
     return a + "" + b + "" + c;
+}
+
+/**
+ * 转化数字 1000->1千 10000-1万
+ * @param num
+ * @returns {string|*}
+ */
+function parseNum(num) {
+    if(!/^(\+|-)?(\d+)(\.\d+)?$/.test(num)) {
+        layer.msg("系统偷懒啦,请稍后再试", { icon: 5 })
+        return num;
+    }
+    if (num / 10000 >= 1) {
+        return (num / 10000).toFixed(2) + '万';
+    } else if (num / 1000 >= 1) {
+        return (num / 1000).toFixed(2) + '千';
+    }
+    return num;
 }
 
 /**
@@ -119,47 +121,3 @@ function getPre7BetweenMonth() {
     return {"dateArr": dateArr, "dateArrNumStr": dateArrNumStr};
 }
 
-/**
- * 转化时间，把毫秒转化为时间字符串
- * @param dateLong
- * @returns {string}
- */
-function getFormatDate(dateLong) {
-    var date = new Date(dateLong);
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    month = month > 9 ? month : "0"+month;
-    day = day > 9 ? day : "0"+day;
-
-    return year + month + day;
-
-}
-
-/**
- * 转化时间，把毫秒转化为时间字符串
- * @param dateLong
- * @returns {string}
- */
-function getFormatTime(dateLong) {
-    try {
-        var date = new Date(dateLong);
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        var hour = date.getHours();
-        var minute = date.getMinutes();
-        var second= date.getSeconds();
-        month = month > 9 ? month : "0"+month;
-        day = day > 9 ? day : "0"+day;
-        hour = hour > 9 ? hour : "0"+hour;
-        minute = minute > 9 ? minute : "0"+minute;
-        second = second > 9 ? second : "0"+second;
-
-        return year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
-    } catch (err) {
-        console.log(err)
-        return "【数据格式有误！】";
-    }
-
-}

@@ -11,6 +11,9 @@ import java.util.List;
  */
 public interface UserLoginService {
 
+
+    Long count(String startTime, String endTime);
+
     /**
      * 通过ID查询单条数据
      *

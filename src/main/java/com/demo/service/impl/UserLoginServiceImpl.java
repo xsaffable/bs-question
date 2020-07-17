@@ -19,6 +19,11 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Resource
     private UserLoginDao userLoginDao;
 
+    @Override
+    public Long count(String startTime, String endTime) {
+        return this.userLoginDao.count(startTime, endTime);
+    }
+
     /**
      * 通过ID查询单条数据
      *

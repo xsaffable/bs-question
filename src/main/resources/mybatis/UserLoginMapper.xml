@@ -7,6 +7,20 @@
         <result property="uid" column="uid" jdbcType="VARCHAR"/>
         <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
     </resultMap>
+    
+    <select id="count" resultType="Long">
+        select
+            count(*)
+        from questionnaire.user_login
+        <where>
+            <if test="startTime != null">
+                and createtime >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and #{endTime} > createtime
+            </if>
+        </where>
+    </select>
 
     <!--查询单个-->
     <select id="queryById" resultMap="UserLoginMap">

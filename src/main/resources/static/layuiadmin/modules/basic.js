@@ -209,9 +209,13 @@ layui.define(['table', 'form'], function (exports) {
     table.on('tool(LAY-app-forum-list)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
-            layer.confirm('确定删除此条帖子？', function(index){
-                obj.del();
-                layer.close(index);
+            layer.confirm('确定删除此公告？', function(index){
+                reqNum = 1;
+                requestAsync("/basic/n/delete/"+data.id, null, function (data) {
+                    parent.layer.msg(data.msg || "删除成功", { icon: 6, time: 500 });
+                    table.reload('LAY-app-forum-list'); //数据刷新
+                    layer.close(index); //关闭弹层
+                })
             });
         } else if(obj.event === 'edit'){
             var tr = $(obj.tr);
@@ -229,18 +233,33 @@ layui.define(['table', 'form'], function (exports) {
                         ,submit = layero.find('iframe').contents().find('#'+ submitID);
 
                     //监听提交
-                    iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
-                        var field = data.field; //获取提交的字段
+                    iframeWindow.layui.form.on('submit('+ submitID +')', function(d){
+                        var field = d.field; //获取提交的字段
+                        field["id"] = data.id;
+                        if (field["top"] === "on") {
+                            field["top"] = 1;
+                        } else {
+                            field["top"] = 0;
+                        }
+                        reqNum = 1;
+                        requestAsync("/basic/n/update/", JSON.stringify(field), function (data) {
+                            parent.layer.msg(data.msg || "更新成功", { icon: 6, time: 500 });
+                            table.reload('LAY-app-forum-list'); //数据刷新
+                            layer.close(index); //关闭弹层
+                        })
 
-                        //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        table.reload('LAY-app-forum-list'); //数据刷新
-                        layer.close(index); //关闭弹层
                     });
 
                     submit.trigger('click');
                 }
                 ,success: function(layero, index){
+                    var othis = layero.find('iframe').contents();
+                    othis.find("textarea[name='text']").val(data.text);
+                    if (data.top === 1) {
+                        othis.find("input[name='top']").attr("checked", true);
+                    } else {
+                        othis.find("input[name='top']").attr("checked", false);
+                    }
 
                 }
             });
