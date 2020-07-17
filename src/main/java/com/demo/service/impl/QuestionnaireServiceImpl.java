@@ -1,5 +1,6 @@
 package com.demo.service.impl;
 
+import com.demo.entity.po.Question;
 import com.demo.entity.po.Questionnaire;
 import com.demo.dao.QuestionnaireDao;
 import com.demo.service.QuestionnaireService;
@@ -18,6 +19,24 @@ import java.util.List;
 public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Resource
     private QuestionnaireDao questionnaireDao;
+
+    /**
+     * 分页列表
+     *
+     * @param page 查询页码
+     * @param limit  查询条数
+     * @return 对象列表
+     */
+    @Override
+    public List<Question> listPage(Question question, int page, int limit) {
+        int offset = (page - 1) * limit;
+        return this.questionnaireDao.listPage(question, offset, limit);
+    }
+
+    @Override
+    public Long count(Question question) {
+        return this.questionnaireDao.count(question);
+    }
 
     /**
      * 通过ID查询单条数据

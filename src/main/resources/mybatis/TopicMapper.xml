@@ -19,7 +19,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="TopicMap">
         select
-          id, q_id, order, title, type, ans_id, ans_order, ans_title, ans_text, createtime, updatetime
+          id, q_id, `order`, title, type, ans_id, ans_order, ans_title, ans_text, createtime, updatetime
         from questionnaire.topic
         where id = #{id}
     </select>
@@ -27,7 +27,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="TopicMap">
         select
-          id, q_id, order, title, type, ans_id, ans_order, ans_title, ans_text, createtime, updatetime
+          id, q_id, `order`, title, type, ans_id, ans_order, ans_title, ans_text, createtime, updatetime
         from questionnaire.topic
         limit #{offset}, #{limit}
     </select>
@@ -35,7 +35,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="TopicMap">
         select
-          id, q_id, order, title, type, ans_id, ans_order, ans_title, ans_text, createtime, updatetime
+          id, q_id, `order`, title, type, ans_id, ans_order, ans_title, ans_text, createtime, updatetime
         from questionnaire.topic
         <where>
             <if test="id != null and id != ''">
@@ -72,29 +72,24 @@
                 and updatetime = #{updatetime}
             </if>
         </where>
+        order by ans_order
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into questionnaire.topic(order, title, type, ans_order, ans_title, ans_text, createtime, updatetime)
-        values (#{order}, #{title}, #{type}, #{ansOrder}, #{ansTitle}, #{ansText}, #{createtime}, #{updatetime})
+    <insert id="insert">
+        insert into questionnaire.topic(id, q_id, `order`, title, type, ans_id, ans_order, ans_title, ans_text)
+        values (#{id}, #{qId}, #{order}, #{title}, #{type}, #{ansId}, #{ansOrder}, #{ansTitle}, #{ansText})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update questionnaire.topic
         <set>
-            <if test="order != null">
-                order = #{order},
-            </if>
             <if test="title != null and title != ''">
                 title = #{title},
             </if>
             <if test="type != null">
                 type = #{type},
-            </if>
-            <if test="ansOrder != null">
-                ans_order = #{ansOrder},
             </if>
             <if test="ansTitle != null and ansTitle != ''">
                 ans_title = #{ansTitle},
@@ -102,14 +97,8 @@
             <if test="ansText != null and ansText != ''">
                 ans_text = #{ansText},
             </if>
-            <if test="createtime != null">
-                createtime = #{createtime},
-            </if>
-            <if test="updatetime != null">
-                updatetime = #{updatetime},
-            </if>
         </set>
-        where id = #{id}
+        where id = #{id} and q_id = #{qId} and ans_id = #{ansId}
     </update>
 
     <!--通过主键删除-->

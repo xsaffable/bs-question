@@ -42,6 +42,11 @@ public class TopicServiceImpl implements TopicService {
         return this.topicDao.queryAllByLimit(offset, limit);
     }
 
+    @Override
+    public List<Topic> queryAll(Topic topic) {
+        return this.topicDao.queryAll(topic);
+    }
+
     /**
      * 新增数据
      *
@@ -61,9 +66,8 @@ public class TopicServiceImpl implements TopicService {
      * @return 实例对象
      */
     @Override
-    public Topic update(Topic topic) {
-        this.topicDao.update(topic);
-        return this.queryById(topic.getId());
+    public int update(Topic topic) {
+        return this.topicDao.update(topic);
     }
 
     /**

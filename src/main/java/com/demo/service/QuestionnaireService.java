@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import com.demo.entity.po.Question;
 import com.demo.entity.po.Questionnaire;
 import java.util.List;
 
@@ -10,6 +11,16 @@ import java.util.List;
  * @since 2020-07-10 09:36:57
  */
 public interface QuestionnaireService {
+
+    /**
+     * 分页列表
+     * @param page 查询页码
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<Question> listPage(Question question, int page, int limit);
+
+    Long count(Question question);
 
     /**
      * 通过ID查询单条数据

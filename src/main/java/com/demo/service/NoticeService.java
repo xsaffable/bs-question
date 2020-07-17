@@ -22,11 +22,13 @@ public interface NoticeService {
     /**
      * 查询多条数据
      *
-     * @param offset 查询起始位置
+     * @param page 页码
      * @param limit 查询条数
      * @return 对象列表
      */
-    List<Notice> queryAllByLimit(int offset, int limit);
+    List<Notice> queryAllByLimit(int page, int limit);
+
+    Long count();
 
     /**
      * 新增数据

@@ -30,11 +30,11 @@
                         <div class="layui-input-inline">
                             <select name="type" lay-verify="required">
                                 <option value="">请选择分类</option>
-                                <option value="0">美食</option>
-                                <option value="1">新闻</option>
-                                <option value="2">八卦</option>
-                                <option value="3">体育</option>
-                                <option value="4">音乐</option>
+<!--                                <option value="0">美食</option>-->
+<!--                                <option value="1">新闻</option>-->
+<!--                                <option value="2">八卦</option>-->
+<!--                                <option value="3">体育</option>-->
+<!--                                <option value="4">音乐</option>-->
                             </select>
                         </div>
                     </div>
@@ -73,6 +73,7 @@
 
 <script src="../../../static/js/jquery-2.1.0.js"></script>
 <script src="../../../static/layuiadmin/layui/layui.js"></script>
+<script src="../../static/js/util/request.js"></script>
 <script>
 
     var question_no = 1;
@@ -85,7 +86,7 @@
     // 加载数据
     function loadData(data) {
         $("input[name='title']").val(data.title);
-        $("select[name='type']").val(data.type);
+        $("select[name='type']").val(data.typeId);
         if (data.status == 0) {
             $("input[name='status']").prop("checked", false);
         } else {
@@ -94,7 +95,7 @@
         // 遍历每一个问题
         for (i in data["questions"]) {
             var question = data["questions"][i];
-            if (question["queType"] == "radio") {
+            if (question["type"] == "0") {
                 $("#add_topic_radio").click();
             } else {
                 $("#add_topic_checkbox").click();
@@ -163,11 +164,12 @@
 
     })
 
-    function init(data) {
+    function init(data, qId) {
         layui.use(['index', 'form'], function () {
             var $ = layui.$
                 , form = layui.form;
 
+            var dd = data;
             //监听提交
             form.on('submit(layuiadmin-app-form-submit)', function (data) {
                 var field = data.field; //获取提交的字段
@@ -184,31 +186,37 @@
                 // 获取所有问题块
                 var ques = $(".layui-card-body").children("div").slice(2);
                 // 遍历所有问题
+                var i = 0;
                 $.each(ques, function () {
                     var title = $($($(this).children("div")[0]).find("input")[0]).val();
                     var queType = $($($(this).children("div")[0]).find("label")[0]).attr("data-name");
                     var ans = $($($($(this).children("div")[1])[0]).children("div")[0]).children("div");
-                    var question = {"title": title, "queType": queType, "ans": []};
+                    var question = {"id": dd["questions"][i]["id"], "qId": dd["questions"][i]["qId"], "title": title, "type": queType, "ans": []};
+                    var j = 0;
                     // 遍历所有答案
                     $.each(ans, function () {
                         var ans_title = $($(this).children("div")[0]).html();
                         var ans_val = $($(this).children("input")[0]).val();
-                        question["ans"].push({"ansTitle": ans_title, "ansVal": ans_val});
+                        question["ans"].push({"id": dd["questions"][i]["ans"][j]["id"], "ansTitle": ans_title, "ansVal": ans_val});
+                        j += 1;
                     });
                     questions.push(question);
+                    i += 1;
                 })
 
                 questionnaire["questions"] = questions;
+                questionnaire["id"] = qId;
 
-                // 展示需要提交到后台的数据
-                parent.layer.msg(JSON.stringify(questionnaire))
+                reqNum = 1;
+                requestAsync("/basic/q/update", JSON.stringify(questionnaire), function (data) {
+                    parent.layer.msg(data.msg || "更新成功", { icon: 6, time: 500 })
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 
-                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layui.table.reload('LAY-app-content-list'); //重载表格
+                    parent.layer.close(index); //再执行关闭
+                })
 
-                // 提交 Ajax 成功后，关闭当前弹层并重载表格
-                // $.ajax({});
-                parent.layui.table.reload('LAY-app-content-list'); //重载表格
-                parent.layer.close(index); //再执行关闭
+                return false;
             });
 
             // 注册点击事件
@@ -219,7 +227,7 @@
                     "    <label class=\"layui-form-label\">问题"+question_no+"(单选): </label>\n" +
                     "    <a onclick='del_question(this)' class=\"layui-btn layui-btn-xs layui-inline del_topic\" style=\"margin-top: 8px;\"><i class=\"layui-icon layui-icon-reduce-circle\"></i>删除</a>\n" +
                     "    <div class=\"layui-form-item\">\n" +
-                    "        <label class=\"layui-form-label\" data-name='radio'>题目 </label>\n" +
+                    "        <label class=\"layui-form-label\" data-name='0'>题目 </label>\n" +
                     "        <div class=\"layui-input-block\">\n" +
                     "            <input type=\"text\" name=\"topic_title\" required  lay-verify=\"required\" placeholder=\"请输入题目\" autocomplete=\"off\" class=\"layui-input\">\n" +
                     "        </div>\n" +
@@ -248,7 +256,7 @@
                     "    <label class=\"layui-form-label\">问题"+question_no+"(多选): </label>\n" +
                     "    <a onclick='del_question(this)' class=\"layui-btn layui-btn-xs layui-inline del_topic\" style=\"margin-top: 8px;\"><i class=\"layui-icon layui-icon-reduce-circle\"></i>删除</a>\n" +
                     "    <div class=\"layui-form-item\">\n" +
-                    "        <label class=\"layui-form-label\" data-name='checkbox'>题目 </label>\n" +
+                    "        <label class=\"layui-form-label\" data-name='1'>题目 </label>\n" +
                     "        <div class=\"layui-input-block\">\n" +
                     "            <input type=\"text\" name=\"topic_title\" required  lay-verify=\"required\" placeholder=\"请输入题目\" autocomplete=\"off\" class=\"layui-input\">\n" +
                     "        </div>\n" +
@@ -270,9 +278,21 @@
                 question_no += 1;
             });
 
-            // 加载数据
-            loadData(data);
-            layui.form.render();
+            // 加载分类下拉选择框
+            reqNum = 1;
+            requestAsync("/basic/qtype/list", null, function (d) {
+                let qtypes = d.data;
+
+                for (let qtype of qtypes) {
+                    $("select[name='type']").append("<option value='"+qtype.id+"'>"+qtype.name+"</option>");
+                }
+                form.render();
+
+                // 加载数据
+                loadData(data);
+                layui.form.render();
+
+            })
         });
     }
 </script>

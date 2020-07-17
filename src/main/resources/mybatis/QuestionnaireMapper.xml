@@ -12,6 +12,89 @@
         <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap type="com.demo.entity.po.Question" id="QuestionMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="typeId" column="t_id" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="listPage" resultMap="QuestionMap">
+        SELECT
+            t.id,
+            u.username,
+            u.id user_id,
+            t.type,
+            t.t_id,
+            t.title,
+            t.state,
+            t.createtime
+        FROM
+            (
+                SELECT
+                    q.id,
+                    qt.NAME type,
+                    qt.id t_id,
+                    q.title,
+                    q.uid,
+                    q.state,
+                    q.createtime
+                FROM
+                    questionnaire.questionnaire q
+                        LEFT JOIN questionnaire.question_type qt ON q.type_id = qt.id
+                    <where>
+                        <if test="question.id != null and question.id != ''">
+                            and q.id = #{question.id}
+                        </if>
+                        <if test="question.typeId != null and question.typeId != ''">
+                            and q.type_id = #{question.typeId}
+                        </if>
+                        <if test="question.title != null and question.title != ''">
+                            and q.title = #{question.title}
+                        </if>
+                    </where>
+                ORDER BY
+                    q.createtime DESC
+                LIMIT #{offset}, #{limit}
+            ) t
+                LEFT JOIN questionnaire.user u ON t.uid = u.id
+    </select>
+
+    <select id="count" resultType="Long">
+        SELECT
+        count(*)
+        FROM
+        (
+        SELECT
+        q.id,
+        qt.NAME type,
+        qt.id t_id,
+        q.title,
+        q.uid,
+        q.state,
+        q.createtime
+        FROM
+        questionnaire.questionnaire q
+        LEFT JOIN questionnaire.question_type qt ON q.type_id = qt.id
+        <where>
+            <if test="id != null and id != ''">
+                and q.id = #{id}
+            </if>
+            <if test="typeId != null and typeId != ''">
+                and q.type_id = #{typeId}
+            </if>
+            <if test="title != null and title != ''">
+                and q.title = #{title}
+            </if>
+        </where>
+        ) t
+        LEFT JOIN questionnaire.user u ON t.uid = u.id
+    </select>
+
     <!--查询单个-->
     <select id="queryById" resultMap="QuestionnaireMap">
         select
@@ -59,9 +142,9 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into questionnaire.questionnaire(type_id, title, uid, state, createtime, updatetime)
-        values (#{typeId}, #{title}, #{uid}, #{state}, #{createtime}, #{updatetime})
+    <insert id="insert">
+        insert into questionnaire.questionnaire(id, type_id, title, uid, state)
+        values (#{id}, #{typeId}, #{title}, #{uid}, #{state})
     </insert>
 
     <!--通过主键修改数据-->
@@ -79,12 +162,6 @@
             </if>
             <if test="state != null">
                 state = #{state},
-            </if>
-            <if test="createtime != null">
-                createtime = #{createtime},
-            </if>
-            <if test="updatetime != null">
-                updatetime = #{updatetime},
             </if>
         </set>
         where id = #{id}

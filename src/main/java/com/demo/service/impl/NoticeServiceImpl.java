@@ -33,13 +33,19 @@ public class NoticeServiceImpl implements NoticeService {
     /**
      * 查询多条数据
      *
-     * @param offset 查询起始位置
+     * @param page 页码
      * @param limit 查询条数
      * @return 对象列表
      */
     @Override
-    public List<Notice> queryAllByLimit(int offset, int limit) {
+    public List<Notice> queryAllByLimit(int page, int limit) {
+        int offset = (page - 1) * limit;
         return this.noticeDao.queryAllByLimit(offset, limit);
+    }
+
+    @Override
+    public Long count() {
+        return this.noticeDao.count();
     }
 
     /**

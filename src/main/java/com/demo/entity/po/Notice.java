@@ -1,5 +1,7 @@
 package com.demo.entity.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 import java.io.Serializable;
 
@@ -20,6 +22,10 @@ public class Notice implements Serializable {
     */
     private String uid;
     /**
+     * 用户名
+     */
+    private String username;
+    /**
     * 公告内容
     */
     private String text;
@@ -32,12 +38,22 @@ public class Notice implements Serializable {
     /**
     * 创建时间
     */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createtime;
     /**
     * 更新时间
     */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp updatetime;
 
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getId() {
         return id;

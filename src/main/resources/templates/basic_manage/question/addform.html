@@ -30,11 +30,6 @@
                         <div class="layui-input-inline">
                             <select name="type" lay-verify="required">
                                 <option value="">请选择分类</option>
-                                <option value="0">美食</option>
-                                <option value="1">新闻</option>
-                                <option value="2">八卦</option>
-                                <option value="3">体育</option>
-                                <option value="4">音乐</option>
                             </select>
                         </div>
                     </div>
@@ -73,6 +68,7 @@
 
 <script src="../../../static/js/jquery-2.1.0.js"></script>
 <script src="../../../static/layuiadmin/layui/layui.js"></script>
+<script src="../../static/js/util/request.js"></script>
 <script>
 
     var question_no = 1;
@@ -129,6 +125,18 @@
         var $ = layui.$
             , form = layui.form;
 
+        // 加载分类下拉选择框
+        reqNum = 1;
+        requestAsync("/basic/qtype/list", null, function (data) {
+            let qtypes = data.data;
+
+            for (let qtype of qtypes) {
+                $("select[name='type']").append("<option value='"+qtype.id+"'>"+qtype.name+"</option>");
+            }
+            form.render();
+
+        })
+
         //监听提交
         form.on('submit(layuiadmin-app-form-submit)', function (data) {
             var field = data.field; //获取提交的字段
@@ -146,9 +154,11 @@
             var ques = $(".layui-card-body").children("div").slice(2);
             // 遍历所有问题
             $.each(ques, function () {
+                // 问题类型 单选/多选
+                var qType = $($(this).children("label")[0]).attr("id");
                 var title = $($($(this).children("div")[0]).find("input")[0]).val();
                 var ans = $($($($(this).children("div")[1])[0]).children("div")[0]).children("div");
-                var question = {"title": title, "ans": []};
+                var question = {"title": title, "type": qType, "ans": []};
                 // 遍历所有答案
                 $.each(ans, function () {
                     var ans_title = $($(this).children("div")[0]).html();
@@ -160,15 +170,17 @@
 
             questionnaire["questions"] = questions;
 
-            // 展示需要提交到后台的数据
-            parent.layer.msg(JSON.stringify(questionnaire))
+            reqNum = 1;
+            requestAsync("/basic/q/add", JSON.stringify(questionnaire), function (data) {
+                parent.layer.msg(data.msg || "添加成功", { icon: 6, time: 500 });
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 
-            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                // 重新加载数据
+                parent.layui.table.reload('LAY-app-content-list');
+                parent.layer.close(index); //再执行关闭
+            });
 
-            //提交 Ajax 成功后，关闭当前弹层并重载表格
-            //$.ajax({});
-            parent.layui.table.reload('LAY-app-content-list'); //重载表格
-            parent.layer.close(index); //再执行关闭
+            return false;
         });
 
         // 注册点击事件
@@ -176,7 +188,7 @@
             ans_title_index[question_no] = 1;
             var questions =
                 "<div id='"+question_no+"' class=\"layui-form-item\" style=\"border: 1px solid #BBBBBB; margin: 9px 40px;\">\n" +
-                "    <label class=\"layui-form-label\">问题"+question_no+"(单选): </label>\n" +
+                "    <label id='0' class=\"layui-form-label\">问题"+question_no+"(单选): </label>\n" +
                 "    <a onclick='del_question(this)' class=\"layui-btn layui-btn-xs layui-inline del_topic\" style=\"margin-top: 8px;\"><i class=\"layui-icon layui-icon-reduce-circle\"></i>删除</a>\n" +
                 "    <div class=\"layui-form-item\">\n" +
                 "        <label class=\"layui-form-label\">题目 </label>\n" +
@@ -205,7 +217,7 @@
             ans_title_index[question_no] = 1;
             var questions =
                 "<div id='"+question_no+"' class=\"layui-form-item\" style=\"border: 1px solid #BBBBBB; margin: 9px 40px;\">\n" +
-                "    <label class=\"layui-form-label\">问题"+question_no+"(多选): </label>\n" +
+                "    <label id='1' class=\"layui-form-label\">问题"+question_no+"(多选): </label>\n" +
                 "    <a onclick='del_question(this)' class=\"layui-btn layui-btn-xs layui-inline del_topic\" style=\"margin-top: 8px;\"><i class=\"layui-icon layui-icon-reduce-circle\"></i>删除</a>\n" +
                 "    <div class=\"layui-form-item\">\n" +
                 "        <label class=\"layui-form-label\">题目 </label>\n" +

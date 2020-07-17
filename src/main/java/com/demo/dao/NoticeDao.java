@@ -29,6 +29,12 @@ public interface NoticeDao {
      */
     List<Notice> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
+    /**
+     * 总记录数
+     * @return Long
+     */
+    Long count();
+
 
     /**
      * 通过实体作为筛选条件查询

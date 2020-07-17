@@ -28,6 +28,8 @@ public interface TopicService {
      */
     List<Topic> queryAllByLimit(int offset, int limit);
 
+    List<Topic> queryAll(Topic topic);
+
     /**
      * 新增数据
      *
@@ -42,7 +44,7 @@ public interface TopicService {
      * @param topic 实例对象
      * @return 实例对象
      */
-    Topic update(Topic topic);
+    int update(Topic topic);
 
     /**
      * 通过主键删除数据

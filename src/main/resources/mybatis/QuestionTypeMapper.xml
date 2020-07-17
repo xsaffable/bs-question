@@ -66,12 +66,6 @@
             <if test="uid != null and uid != ''">
                 uid = #{uid},
             </if>
-            <if test="createtime != null">
-                createtime = #{createtime},
-            </if>
-            <if test="updatetime != null">
-                updatetime = #{updatetime},
-            </if>
         </set>
         where id = #{id}
     </update>

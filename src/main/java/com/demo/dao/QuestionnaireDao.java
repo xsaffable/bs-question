@@ -1,5 +1,6 @@
 package com.demo.dao;
 
+import com.demo.entity.po.Question;
 import com.demo.entity.po.Questionnaire;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -11,6 +12,10 @@ import java.util.List;
  * @since 2020-07-10 09:36:57
  */
 public interface QuestionnaireDao {
+
+    List<Question> listPage(Question question, @Param("offset") int offset, @Param("limit") int limit);
+
+    Long count(Question question);
 
     /**
      * 通过ID查询单条数据
