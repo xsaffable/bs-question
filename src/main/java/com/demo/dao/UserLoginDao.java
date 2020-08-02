@@ -13,12 +13,20 @@ import java.util.List;
 public interface UserLoginDao {
 
     /**
-     * 统计总登录ishu
+     * 统计总登录数
      * @param startTime 起始时间(包括)
      * @param endTime 截止时间(不包括)
      * @return Long
      */
     Long count(String startTime, String endTime);
+
+    /**
+     * 统计总登录用户数
+     * @param startTime 起始时间(包括)
+     * @param endTime 截止时间(不包括)
+     * @return Long
+     */
+    Long countUsers(String startTime, String endTime);
 
     /**
      * 通过ID查询单条数据

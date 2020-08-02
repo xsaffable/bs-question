@@ -24,6 +24,11 @@ public class UserLoginServiceImpl implements UserLoginService {
         return this.userLoginDao.count(startTime, endTime);
     }
 
+    @Override
+    public Long countUsers(String startTime, String endTime) {
+        return this.userLoginDao.countUsers(startTime, endTime);
+    }
+
     /**
      * 通过ID查询单条数据
      *

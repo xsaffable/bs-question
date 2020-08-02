@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public R<UserRememberVO> login(User user) {
         R<UserRememberVO> response = new R<>();
+        String pwd = user.getPassword();
         List<User> users = queryAllByUser(user);
         if (users.size() > 0) {
             // 有此用户，登录成功
@@ -82,7 +83,8 @@ public class UserServiceImpl implements UserService {
             UserRememberVO rememberVO = new UserRememberVO();
             UserVO vo = new UserVO();
             vo.setUsername(users.get(0).getUsername());
-            vo.setPassword(users.get(0).getPassword());
+//            vo.setPassword(users.get(0).getPassword());
+            vo.setPassword(pwd);
             rememberVO.setUserVO(vo);
             rememberVO.setUserId(users.get(0).getId());
             rememberVO.setRoleId(role);
@@ -172,6 +174,11 @@ public class UserServiceImpl implements UserService {
         user.setRole(UserFields.ROLE_SUPER_ADMIN);
         long superCount = this.userDao.count(user);
         return count + superCount;
+    }
+
+    @Override
+    public long countAll(String startTime, String endTime) {
+        return this.userDao.countAll(startTime, endTime);
     }
 
     /**

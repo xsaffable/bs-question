@@ -62,6 +62,9 @@ public interface UserDao {
      */
     long count(User user);
 
+    // 总记录数
+    long countAll(String startTime, String endTime);
+
     /**
      * 新增数据
      *

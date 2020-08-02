@@ -64,6 +64,21 @@
                 LEFT JOIN questionnaire.user u ON t.uid = u.id
     </select>
 
+    <select id="countByTime" resultType="Long">
+        SELECT
+            count(*)
+        FROM
+        questionnaire.questionnaire q
+        <where>
+            <if test="startTime != null">
+                and createtime >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and #{endTime} > createtime
+            </if>
+        </where>
+    </select>
+
     <select id="count" resultType="Long">
         SELECT
         count(*)

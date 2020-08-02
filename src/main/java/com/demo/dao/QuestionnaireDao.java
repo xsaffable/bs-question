@@ -17,6 +17,8 @@ public interface QuestionnaireDao {
 
     Long count(Question question);
 
+    Long countByTime(String startTime, String endTime);
+
     /**
      * 通过ID查询单条数据
      *

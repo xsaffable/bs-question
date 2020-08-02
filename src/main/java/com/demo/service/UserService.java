@@ -71,6 +71,12 @@ public interface UserService {
     long countAdmin(User user);
 
     /**
+     * 总用户数
+     * @return long
+     */
+    long countAll(String startTime, String endTime);
+
+    /**
      * 登录
      * @param user User
      * @return R<UserRememberVO>

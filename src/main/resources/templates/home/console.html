@@ -38,10 +38,10 @@
                     <span class="layui-badge layui-bg-cyan layuiadmin-badge">月</span>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
-                    <p class="layuiadmin-big-font" id="usercount_month">33,555</p>
+                    <p class="layuiadmin-big-font" id="usercount_month">0</p>
                     <p>
                         总用户量
-                        <span class="layuiadmin-span-color"><span id="usercount_all">5万</span> <i
+                        <span class="layuiadmin-span-color"><span id="usercount_all">0</span> <i
                                 class="layui-inline layui-icon layui-icon-face-smile-b"></i></span>
                     </p>
                 </div>
@@ -55,10 +55,10 @@
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
 
-                    <p class="layuiadmin-big-font" id="useractive_month">66,666</p>
+                    <p class="layuiadmin-big-font" id="useractive_month">0</p>
                     <p>
                         最近一个月
-                        <span class="layuiadmin-span-color"><span id="useractive_month_percentage">15%</span> <i
+                        <span class="layuiadmin-span-color"><span id="useractive_month_percentage">0%</span> <i
                                 class="layui-inline layui-icon layui-icon-user"></i></span>
                     </p>
                 </div>
@@ -72,10 +72,10 @@
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
 
-                    <p class="layuiadmin-big-font" id="questioncount_month">999,666</p>
+                    <p class="layuiadmin-big-font" id="questioncount_month">0</p>
                     <p>
                         总问卷量
-                        <span class="layuiadmin-span-color"><span id="question_count_all">2万</span> <i
+                        <span class="layuiadmin-span-color"><span id="question_count_all">0</span> <i
                                 class="layui-inline layui-icon layui-icon-file-b"></i></span>
                     </p>
                 </div>
@@ -157,6 +157,12 @@
 
     // 查询总访问次数的 url
     var visitCountUrl = "/index/visit_count";
+    // 查询用户量的 url
+    var userCountUrl = "/index/user_count";
+    // 活跃用户的 url
+    var activeUserCountUrl = '/index/active_user_count';
+    // 问卷量
+    var questionnaireCountUrl = '/index/questionnaire_count';
 
     layui.config({
         base: '../../static/layuiadmin/' //静态资源所在路径
@@ -166,7 +172,7 @@
     }).use(['index', 'console'], function () {
 
         // 访问量
-        reqNum = 1;
+        reqNum = 6;
         var month = getPreMonth(0);
         var year = month['year'];
         var month = month['month'] > 9 ? month['month'] : '0'+month['month'];
@@ -177,6 +183,22 @@
         });
         requestAsync(visitCountUrl, JSON.stringify({}), function (data) {
             $('#visit_all').html(parseNum(data.data));
+        });
+        requestAsync(userCountUrl, JSON.stringify({'startTime': startTime}), function (data) {
+            $('#usercount_month').html(formatNum(data.data));
+        });
+        requestAsync(userCountUrl, JSON.stringify({}), function (data) {
+            $('#usercount_all').html(parseNum(data.data));
+            requestAsync(activeUserCountUrl, JSON.stringify({'startTime': startTime}), function (d) {
+                $('#useractive_month').html(formatNum(d.data));
+                $('#useractive_month_percentage').html(getRatio(d.data, data.data)+'%');
+            });
+        });
+        requestAsync(questionnaireCountUrl, JSON.stringify({'startTime': startTime}), function (data) {
+            $('#questioncount_month').html(formatNum(data.data));
+        });
+        requestAsync(questionnaireCountUrl, JSON.stringify({}), function (data) {
+            $('#question_count_all').html(formatNum(data.data));
         });
 
     });

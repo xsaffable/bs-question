@@ -38,6 +38,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return this.questionnaireDao.count(question);
     }
 
+    @Override
+    public Long countByTime(String startTime, String endTime) {
+        return this.questionnaireDao.countByTime(startTime, endTime);
+    }
+
     /**
      * 通过ID查询单条数据
      *

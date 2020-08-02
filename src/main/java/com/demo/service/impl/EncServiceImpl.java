@@ -1,10 +1,7 @@
 package com.demo.service.impl;
 
 import com.demo.service.EncService;
-import com.demo.util.encryption.EncAndDecByAes;
-import com.demo.util.encryption.EncAndDecResponse;
-import com.demo.util.encryption.IEncrypt;
-import com.demo.util.encryption.Type;
+import com.demo.util.encryption.*;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,15 +29,17 @@ public class EncServiceImpl implements EncService {
      */
     @Override
     public String encPwd(String pwd) {
-        // 加密
-        EncAndDecResponse encResponse = this.encrypt.encrypt(pwd);
-        if (Type.ENC_SUC.code() == encResponse.getType().code()) {
-            // 加密成功
-            return encResponse.getData();
-        } else {
-            // 加密失败
-            throw new RuntimeException(encResponse.getData());
-        }
+//        // 加密
+//        EncAndDecResponse encResponse = this.encrypt.encrypt(pwd);
+//        if (Type.ENC_SUC.code() == encResponse.getType().code()) {
+//            // 加密成功
+//            return encResponse.getData();
+//        } else {
+//            // 加密失败
+//            throw new RuntimeException(encResponse.getData());
+//        }
+
+        return EncWithMd5.enc(pwd);
     }
 
 }
