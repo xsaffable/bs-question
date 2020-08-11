@@ -5,8 +5,9 @@ var urlPrefix = "";
 // 请求个数，当全部请求完毕，关闭加载动画
 var reqNum = 1;
 
-// 加载动画图层的 index
-var indexList = [];
+var showLoading = false;
+
+var index;
 
 /**
  * 异步请求工具方法
@@ -38,20 +39,11 @@ function requestAsync(url, jsonData, sucFunc, reqType, errFunc, compFunc, before
 		compFunc = function(XMLHttpRequest, textStatus) {
 			reqNum--;
 			if (reqNum == 0) {
-				for (var i in indexList) {
-					layer.close(indexList[i]);
-				}
+				layer.close(index);
+				showLoading = false;
 			}
 		};
 	}
-
-	if ((beforeFunc == undefined) || (beforeFunc == null) || (beforeFunc == "")) {
-		beforeFunc = function () {
-			var index = layer.load(3, {shade: [0.1, '#393D49'], time: 20*1000});
-			indexList.push(index);
-		};
-	}
-
 
 	// 发起异步请求
 	$.ajax({
@@ -70,7 +62,12 @@ function requestAsync(url, jsonData, sucFunc, reqType, errFunc, compFunc, before
 		},
 		complete: compFunc,
 		error: errFunc,
-		beforeSend: beforeFunc
+		beforeSend: function () {
+			if (!showLoading && reqNum > 0) {
+				index = layer.load(3, {shade: [0.1, '#393D49'], time: 20*1000});
+				showLoading = true;
+			}
+		},
 	});
 
 }

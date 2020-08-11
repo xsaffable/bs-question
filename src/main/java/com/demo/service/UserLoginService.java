@@ -1,6 +1,7 @@
 package com.demo.service;
 
 import com.demo.entity.po.UserLogin;
+
 import java.util.List;
 
 /**
@@ -14,7 +15,11 @@ public interface UserLoginService {
 
     Long count(String startTime, String endTime);
 
+    List<Long> countMonth();
+
     Long countUsers(String startTime, String endTime);
+
+    double incRate();
 
     /**
      * 通过ID查询单条数据

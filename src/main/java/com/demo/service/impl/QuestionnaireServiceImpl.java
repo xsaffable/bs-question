@@ -3,10 +3,16 @@ package com.demo.service.impl;
 import com.demo.entity.po.Question;
 import com.demo.entity.po.Questionnaire;
 import com.demo.dao.QuestionnaireDao;
+import com.demo.entity.vo.index.TimeVO;
 import com.demo.service.QuestionnaireService;
+import com.demo.util.DateUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +47,48 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     public Long countByTime(String startTime, String endTime) {
         return this.questionnaireDao.countByTime(startTime, endTime);
+    }
+
+    @Override
+    public List<Long> countMonth() {
+        List<Long> list = new ArrayList<>();
+        List<TimeVO> yearMonth = DateUtils.getYearMonth();
+        for (TimeVO timeVO : yearMonth) {
+            Long count = this.questionnaireDao.countByTime(timeVO.getStartTime(), timeVO.getEndTime());
+            list.add(count);
+        }
+
+        return list;
+    }
+
+    @Override
+    public double incRate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        String nowEndDate = sdf.format(calendar.getTime());
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        String nowStartDate = sdf.format(calendar.getTime());
+
+        Long nowCount = this.questionnaireDao.countByTime(nowStartDate, nowEndDate);
+
+        calendar.add(Calendar.MONTH, -1);
+        String preStartDate = sdf.format(calendar.getTime());
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, -1);
+        String preEndDate = sdf.format(calendar.getTime());
+
+        Long preCount = this.questionnaireDao.countByTime(preStartDate, preEndDate);
+        if (preCount == 0) {
+            return 0;
+        }
+        if (nowCount - preCount <= 0) {
+            return 0;
+        }
+        if (nowCount - preCount >= preCount) {
+            return 1;
+        }
+
+        return (nowCount - preCount) / (double) preCount;
     }
 
     /**

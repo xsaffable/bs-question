@@ -146,4 +146,9 @@ public class HomeController {
         return "view_index";
     }
 
+    @RequestMapping("/view/q/detail")
+    public String viewQuestionnaire() {
+        return "views/detailform";
+    }
+
 }

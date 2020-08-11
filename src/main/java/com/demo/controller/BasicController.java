@@ -202,6 +202,7 @@ public class BasicController {
 
         // 查询问卷
         Questionnaire questionnaire = this.questionnaireService.queryById(id);
+        questionAddVO.setId(questionnaire.getId());
         questionAddVO.setTitle(questionnaire.getTitle());
         questionAddVO.setStatus(questionnaire.getState());
         questionAddVO.setTypeId(questionnaire.getTypeId());

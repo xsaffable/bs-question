@@ -25,7 +25,17 @@ layui.define(function(exports) {
             });
         });
 
-        element.render('progress');
+        var quesIncRateUrl = '/index/questionnaire_inc_rate';
+        var visitIncRateUrl = '/index/visit_inc_rate';
+
+        requestAsync(quesIncRateUrl, null, function (data) {
+            $('#ques_inc_rate').attr('lay-percent', data.data+'%');
+            requestAsync(visitIncRateUrl, null, function (data) {
+                $('#visit_inc_rate').attr('lay-percent', data.data+'%');
+                element.render('progress');
+            });
+        });
+
 
     });
 
@@ -48,7 +58,7 @@ layui.define(function(exports) {
                     xAxis: [
                         {
                             type: 'category',
-                            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                            data: []
                         }
                     ],
                     yAxis: [
@@ -71,13 +81,13 @@ layui.define(function(exports) {
                         {
                             name: '访问量',
                             type: 'line',
-                            data: [900, 850, 950, 1000, 1100, 1050, 1000, 1150, 1250, 1370, 1250, 1100]
+                            data: []
                         },
                         {
                             name: '问卷新增量',
                             type: 'line',
                             yAxisIndex: 1,
-                            data: [850, 850, 800, 950, 1000, 950, 950, 1150, 1100, 1240, 1000, 950]
+                            data: []
                         },
                         {
                             name: '问卷填写人次',
@@ -93,6 +103,28 @@ layui.define(function(exports) {
                 echartsApp[index].setOption(options[index]);
                 window.onresize = echartsApp[index].resize;
             };
+
+        var visitCountMonthUrl = "/index/visit_count_month";
+        var quesCountMonthUrl = "/index/questionnaire_count_month";
+
+        var months = []
+        var date = new Date();
+        var month = date.getMonth();
+        var i = month;
+        do {
+            months.push(getPreMonth(i--).month+'月');
+        } while (i >= 0);
+        options[0]['xAxis'][0].data = months;
+        // 访问量
+        requestAsync(visitCountMonthUrl, null, function (data) {
+            options[0]['series'][0].data = data.data;
+            requestAsync(quesCountMonthUrl, null, function (data) {
+                options[0]['series'][1].data = data.data;
+                echartsApp[0].setOption(options[0]);
+            })
+        });
+
+
         //没找到DOM，终止执行
         if (!elemDataView[0]) return;
         renderDataView(0);

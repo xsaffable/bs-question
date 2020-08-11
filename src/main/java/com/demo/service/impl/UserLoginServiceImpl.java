@@ -2,10 +2,16 @@ package com.demo.service.impl;
 
 import com.demo.entity.po.UserLogin;
 import com.demo.dao.UserLoginDao;
+import com.demo.entity.vo.index.TimeVO;
 import com.demo.service.UserLoginService;
+import com.demo.util.DateUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,9 +30,55 @@ public class UserLoginServiceImpl implements UserLoginService {
         return this.userLoginDao.count(startTime, endTime);
     }
 
+    /**
+     * 当年每月的访问量
+     * @return List<LineVO>
+     */
+    @Override
+    public List<Long> countMonth() {
+        List<Long> list = new ArrayList<>();
+        List<TimeVO> yearMonth = DateUtils.getYearMonth();
+        for (TimeVO timeVO : yearMonth) {
+            Long count = this.userLoginDao.count(timeVO.getStartTime(), timeVO.getEndTime());
+            list.add(count);
+        }
+
+        return list;
+    }
+
     @Override
     public Long countUsers(String startTime, String endTime) {
         return this.userLoginDao.countUsers(startTime, endTime);
+    }
+
+    @Override
+    public double incRate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        String nowEndDate = sdf.format(calendar.getTime());
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        String nowStartDate = sdf.format(calendar.getTime());
+
+        Long nowCount = this.userLoginDao.count(nowStartDate, nowEndDate);
+
+        calendar.add(Calendar.MONTH, -1);
+        String preStartDate = sdf.format(calendar.getTime());
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, -1);
+        String preEndDate = sdf.format(calendar.getTime());
+
+        Long preCount = this.userLoginDao.count(preStartDate, preEndDate);
+        if (preCount == 0) {
+            return 0;
+        }
+        if (nowCount - preCount <= 0) {
+            return 0;
+        }
+        if (nowCount - preCount >= preCount) {
+            return 1;
+        }
+
+        return (nowCount - preCount) / (double) preCount;
     }
 
     /**

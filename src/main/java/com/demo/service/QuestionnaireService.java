@@ -24,6 +24,10 @@ public interface QuestionnaireService {
 
     Long countByTime(String startTime, String endTime);
 
+    List<Long> countMonth();
+
+    double incRate();
+
     /**
      * 通过ID查询单条数据
      *

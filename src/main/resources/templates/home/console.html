@@ -104,21 +104,21 @@
                                 <p class="layuiadmin-normal-font">月访问数</p>
                                 <span>同上期增长</span>
                                 <div class="layui-progress layui-progress-big" lay-showPercent="yes">
-                                    <div class="layui-progress-bar" lay-percent="30%"></div>
+                                    <div id="visit_inc_rate" class="layui-progress-bar" lay-percent="100%"></div>
                                 </div>
                             </div>
                             <div class="layuiadmin-card-list">
                                 <p class="layuiadmin-normal-font">月问卷新增数</p>
                                 <span>同上期增长</span>
                                 <div class="layui-progress layui-progress-big" lay-showPercent="yes">
-                                    <div class="layui-progress-bar" lay-percent="20%"></div>
+                                    <div id="ques_inc_rate" class="layui-progress-bar" lay-percent="100%"></div>
                                 </div>
                             </div>
                             <div class="layuiadmin-card-list">
                                 <p class="layuiadmin-normal-font">月问卷填写人次</p>
                                 <span>同上期增长</span>
                                 <div class="layui-progress layui-progress-big" lay-showPercent="yes">
-                                    <div class="layui-progress-bar" lay-percent="25%"></div>
+                                    <div class="layui-progress-bar" lay-percent="100%"></div>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +154,7 @@
 <script src="../../static/js/util/request.js"></script>
 <script src="../../static/js/util/timeAndNumFormat.js"></script>
 <script>
-
+    reqNum = 11;
     // 查询总访问次数的 url
     var visitCountUrl = "/index/visit_count";
     // 查询用户量的 url
@@ -172,7 +172,6 @@
     }).use(['index', 'console'], function () {
 
         // 访问量
-        reqNum = 6;
         var month = getPreMonth(0);
         var year = month['year'];
         var month = month['month'] > 9 ? month['month'] : '0'+month['month'];

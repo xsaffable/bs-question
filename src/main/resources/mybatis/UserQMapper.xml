@@ -59,9 +59,9 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into questionnaire.user_q(uid, qid, q_type_id, q_title, createtime, updatetime)
-        values (#{uid}, #{qid}, #{qTypeId}, #{qTitle}, #{createtime}, #{updatetime})
+    <insert id="insert">
+        insert into questionnaire.user_q(id, uid, qid, q_type_id, q_title)
+        values (#{id}, #{uid}, #{qid}, #{qTypeId}, #{qTitle})
     </insert>
 
     <!--通过主键修改数据-->

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author affable
@@ -61,10 +62,62 @@ public class IndexController {
     }
 
     @PostMapping("/questionnaire_count")
-    public BaseResponse questionnaireCout(@RequestBody TimeVO vo) {
+    public BaseResponse questionnaireCount(@RequestBody TimeVO vo) {
         R<Long> r = new R<>();
         long count = this.questionnaireService.countByTime(vo.getStartTime(), vo.getEndTime());
         r.success("查询成功", count);
+        return r;
+    }
+
+    /**
+     * 今年每个月访问量
+     * @return BaseResponse
+     */
+    @PostMapping("/visit_count_month")
+    public BaseResponse visitCountMonth() {
+        R<List<Long>> r = new R<>();
+        List<Long> counts = this.userLoginService.countMonth();
+
+        r.success("查询成功", counts);
+
+        return r;
+    }
+
+    /**
+     * 今年每个月问卷新增量
+     * @return BaseResponse
+     */
+    @PostMapping("/questionnaire_count_month")
+    public BaseResponse questionnaireCountMonth() {
+        R<List<Long>> r = new R<>();
+        List<Long> counts = this.questionnaireService.countMonth();
+        r.success("查询成功", counts);
+
+        return r;
+    }
+
+    /**
+     * 问卷同期增长率
+     * @return BaseResponse
+     */
+    @PostMapping("/questionnaire_inc_rate")
+    public BaseResponse questionnaireIncRate() {
+        R<String> r = new R<>();
+        double rate = this.questionnaireService.incRate();
+
+        r.success("查询成功", String.format("%.0f", rate * 100));
+        return r;
+    }
+
+    /**
+     * 访问量同期增长率
+     * @return BaseResponse
+     */
+    @PostMapping("/visit_inc_rate")
+    public BaseResponse visitIncRate() {
+        R<String> r = new R<>();
+        double rate = this.userLoginService.incRate();
+        r.success("查询成功", String.format("%.0f", rate * 100));
         return r;
     }
     
