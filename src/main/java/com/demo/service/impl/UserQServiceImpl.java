@@ -2,10 +2,16 @@ package com.demo.service.impl;
 
 import com.demo.entity.po.UserQ;
 import com.demo.dao.UserQDao;
+import com.demo.entity.vo.index.TimeVO;
 import com.demo.service.UserQService;
+import com.demo.util.DateUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,6 +46,48 @@ public class UserQServiceImpl implements UserQService {
     @Override
     public List<UserQ> queryAllByLimit(int offset, int limit) {
         return this.userQDao.queryAllByLimit(offset, limit);
+    }
+
+    @Override
+    public List<Long> countMonth() {
+        List<Long> list = new ArrayList<>();
+        List<TimeVO> yearMonth = DateUtils.getYearMonth();
+        for (TimeVO timeVO : yearMonth) {
+            Long count = this.userQDao.countByTime(timeVO.getStartTime(), timeVO.getEndTime());
+            list.add(count);
+        }
+
+        return list;
+    }
+
+    @Override
+    public double incRate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        String nowEndDate = sdf.format(calendar.getTime());
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        String nowStartDate = sdf.format(calendar.getTime());
+
+        Long nowCount = this.userQDao.countByTime(nowStartDate, nowEndDate);
+
+        calendar.add(Calendar.MONTH, -1);
+        String preStartDate = sdf.format(calendar.getTime());
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, -1);
+        String preEndDate = sdf.format(calendar.getTime());
+
+        Long preCount = this.userQDao.countByTime(preStartDate, preEndDate);
+        if (preCount == 0) {
+            return 1;
+        }
+        if (nowCount - preCount <= 0) {
+            return 0;
+        }
+        if (nowCount - preCount >= preCount) {
+            return 1;
+        }
+
+        return (nowCount - preCount) / (double) preCount;
     }
 
     /**

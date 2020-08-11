@@ -30,6 +30,8 @@ public interface UserQDao {
     List<UserQ> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
 
+    Long countByTime(String startTime, String endTime);
+
     /**
      * 通过实体作为筛选条件查询
      *

@@ -27,12 +27,16 @@ layui.define(function(exports) {
 
         var quesIncRateUrl = '/index/questionnaire_inc_rate';
         var visitIncRateUrl = '/index/visit_inc_rate';
+        var questionnaireIncRateUrl = '/index/questionnaire_edit_inc_rate';
 
         requestAsync(quesIncRateUrl, null, function (data) {
             $('#ques_inc_rate').attr('lay-percent', data.data+'%');
             requestAsync(visitIncRateUrl, null, function (data) {
                 $('#visit_inc_rate').attr('lay-percent', data.data+'%');
-                element.render('progress');
+                requestAsync(questionnaireIncRateUrl, null, function (data) {
+                    $('#ques_edit_inc_rate').attr('lay-percent', data.data+'%');
+                    element.render('progress');
+                });
             });
         });
 
@@ -81,18 +85,18 @@ layui.define(function(exports) {
                         {
                             name: '访问量',
                             type: 'line',
-                            data: []
+                            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         },
                         {
                             name: '问卷新增量',
                             type: 'line',
                             yAxisIndex: 1,
-                            data: []
+                            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         },
                         {
                             name: '问卷填写人次',
                             type: 'line',
-                            data: [870, 850, 850, 950, 1050, 1000, 980, 1150, 1000, 1300, 1150, 1000]
+                            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         }
                     ]
                 }
@@ -106,6 +110,8 @@ layui.define(function(exports) {
 
         var visitCountMonthUrl = "/index/visit_count_month";
         var quesCountMonthUrl = "/index/questionnaire_count_month";
+        // 每月问卷填写量
+        var questionnaireEditCountMonthUrl = '/index/questionnaire_edit_count_month';
 
         var months = []
         var date = new Date();
@@ -120,7 +126,11 @@ layui.define(function(exports) {
             options[0]['series'][0].data = data.data;
             requestAsync(quesCountMonthUrl, null, function (data) {
                 options[0]['series'][1].data = data.data;
-                echartsApp[0].setOption(options[0]);
+                requestAsync(questionnaireEditCountMonthUrl, null, function (data) {
+                    options[0]['series'][2].data = data.data;
+                    echartsApp[0].setOption(options[0]);
+                })
+
             })
         });
 

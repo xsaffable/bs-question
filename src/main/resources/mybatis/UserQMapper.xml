@@ -58,6 +58,21 @@
         </where>
     </select>
 
+    <select id="countByTime" resultType="Long">
+        SELECT
+        count(*)
+        FROM
+        questionnaire.user_q
+        <where>
+            <if test="startTime != null">
+                and createtime >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and #{endTime} > createtime
+            </if>
+        </where>
+    </select>
+
     <!--新增所有列-->
     <insert id="insert">
         insert into questionnaire.user_q(id, uid, qid, q_type_id, q_title)

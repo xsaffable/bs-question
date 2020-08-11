@@ -28,6 +28,10 @@ public interface UserQService {
      */
     List<UserQ> queryAllByLimit(int offset, int limit);
 
+    List<Long> countMonth();
+
+    double incRate();
+
     /**
      * 新增数据
      *

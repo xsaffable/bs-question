@@ -5,6 +5,7 @@ import com.demo.common.response.R;
 import com.demo.entity.vo.index.TimeVO;
 import com.demo.service.QuestionnaireService;
 import com.demo.service.UserLoginService;
+import com.demo.service.UserQService;
 import com.demo.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,9 @@ public class IndexController {
 
     @Resource
     private QuestionnaireService questionnaireService;
+
+    @Resource
+    private UserQService userQService;
 
     /**
      * 访问量
@@ -118,6 +122,30 @@ public class IndexController {
         R<String> r = new R<>();
         double rate = this.userLoginService.incRate();
         r.success("查询成功", String.format("%.0f", rate * 100));
+        return r;
+    }
+
+    /**
+     * 每个月问卷填写量
+     * @return BaseResponse
+     */
+    @PostMapping("/questionnaire_edit_count_month")
+    public BaseResponse questionnaireEditCountMonth() {
+        R<List<Long>> r = new R<>();
+        List<Long> counts = this.userQService.countMonth();
+        r.success("查询成功", counts);
+        return r;
+    }
+
+    /**
+     * 问卷填写量同期增长
+     * @return BaseResponse
+     */
+    @PostMapping("/questionnaire_edit_inc_rate")
+    public BaseResponse questionnaireEditIncRate() {
+        R<String> r = new R<>();
+        double incRate = this.userQService.incRate();
+        r.success("查询成功", String.format("%.0f", incRate * 100));
         return r;
     }
     
