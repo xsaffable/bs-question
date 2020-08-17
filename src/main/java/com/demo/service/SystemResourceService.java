@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface SystemResourceService {
 
+    List<SystemResource> countByTime();
+
     /**
      * 通过ID查询单条数据
      *

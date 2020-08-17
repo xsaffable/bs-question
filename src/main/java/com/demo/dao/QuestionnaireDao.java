@@ -2,6 +2,7 @@ package com.demo.dao;
 
 import com.demo.entity.po.Question;
 import com.demo.entity.po.Questionnaire;
+import com.demo.entity.po.QuestionnaireGroupByType;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface QuestionnaireDao {
     Long count(Question question);
 
     Long countByTime(String startTime, String endTime);
+
+    List<QuestionnaireGroupByType> countGroupByType();
 
     /**
      * 通过ID查询单条数据

@@ -95,14 +95,16 @@ function getPreMonth(preMonth) {
 function getPre7BetweenDate() {
     var dateArr = [];
     var dateArrNumStr = [];
+    var dateYMDStr = [];
     for (var i = 7; i >= 1; i--) {
         var date = getPreDate(i);
         dateArr.push(date.year+"年"+date.month+"月"+date.day+"日");
         var month = date.month > 9 ? date.month : "0"+date.month
         var day = date.day > 9 ? date.day : "0"+date.day;
         dateArrNumStr.push(date.year+month+day);
+        dateYMDStr.push(date.year+'-'+month+'-'+day);
     }
-    return {"dateArr": dateArr, "dateArrNumStr": dateArrNumStr};
+    return {"dateArr": dateArr, "dateArrNumStr": dateArrNumStr, "dateYMDStr": dateYMDStr};
 }
 
 /**

@@ -16,6 +16,17 @@
         <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap type="com.demo.entity.po.TimeCount" id="tc">
+        <result property="dateStr" column="dateStr" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="countByDays" resultType="Long">
+        select count(*) count  from
+          questionnaire.user
+        where left(createtime, 10)=#{time}
+    </select>
+
     <!--查询单个-->
     <select id="queryById" resultMap="UserMap">
         select

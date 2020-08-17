@@ -7,6 +7,21 @@
         <result property="uid" column="uid" jdbcType="VARCHAR"/>
         <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
     </resultMap>
+
+    <resultMap id="ucfbun" type="com.demo.entity.po.UserCountGroupByUName">
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="count" column="count" javaType="long" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="ulvo" type="com.demo.entity.vo.monitor.UserLoginVO">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="INTEGER"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
     
     <select id="count" resultType="Long">
         select
@@ -94,5 +109,23 @@
     <delete id="deleteById">
         delete from questionnaire.user_login where id = #{id}
     </delete>
+
+    <select id="countGroupByUName" resultMap="ucfbun">
+        select u.username, tmp.count from
+            questionnaire.user u,
+            (select uid, count(*) count from
+                questionnaire.user_login
+             group by uid) tmp
+        where u.id=tmp.uid
+        order by tmp.count
+    </select>
+
+    <select id="listByPage" resultMap="ulvo">
+        select u.id, u.username, u.nickname, u.phone_number, u.email, u.sex, ul.createtime from
+          questionnaire.user_login ul left join questionnaire.user u
+          on ul.uid=u.id
+        order by ul.createtime desc
+        limit #{offset}, #{size}
+    </select>
 
 </mapper>

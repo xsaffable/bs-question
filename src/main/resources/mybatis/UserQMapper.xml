@@ -12,6 +12,17 @@
         <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap type="com.demo.entity.po.DTCount" id="DTCount">
+        <result property="dateStr" column="dateStr" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="uqcgbqt" type="com.demo.entity.po.UserQCountGroupByQTitle">
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+    </resultMap>
+
     <!--查询单个-->
     <select id="queryById" resultMap="UserQMap">
         select
@@ -26,6 +37,12 @@
           id, uid, qid, q_type_id, q_title, createtime, updatetime
         from questionnaire.user_q
         limit #{offset}, #{limit}
+    </select>
+
+    <select id="countGroupByQTitle" resultMap="uqcgbqt">
+        select q_title title, count(*) count from
+          questionnaire.user_q
+        group by q_title
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -56,6 +73,14 @@
                 and updatetime = #{updatetime}
             </if>
         </where>
+    </select>
+
+    <select id="queryDTCount" resultType="DTCount">
+        select left(uq.createtime, 10) dateStr, qt.name type, count(*) count from
+        questionnaire.user_q uq, questionnaire.question_type qt
+        where uq.q_type_id=qt.id
+        and left(uq.createtime, 10)>=#{startTime} and #{endTime}>=left(uq.createtime, 10)
+        group by qt.name, left(uq.createtime, 10);
     </select>
 
     <select id="countByTime" resultType="Long">

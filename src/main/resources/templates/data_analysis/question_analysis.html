@@ -13,38 +13,38 @@
 <body>
 
 <div class="layui-fluid">
-    <div class="layui-row layui-col-space15">
-        <div class="layui-col-md12">
-            <div class="layui-card">
-                <form class="layui-form">
-                    <div class="layui-form layui-card-header layuiadmin-card-header-auto">
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label">问卷标题</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="qus_title" placeholder="请输入" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-inline">
-                                <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">
-                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <div class="layui-card-body">
-                    <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"
-                         lay-filter="LAY-index-normcol">
-                        <div carousel-item id="LAY-index-normcol">
-                            <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
-                        </div>
-                    </div>
+<!--    <div class="layui-row layui-col-space15">-->
+<!--        <div class="layui-col-md12">-->
+<!--            <div class="layui-card">-->
+<!--                <form class="layui-form">-->
+<!--                    <div class="layui-form layui-card-header layuiadmin-card-header-auto">-->
+<!--                        <div class="layui-form-item">-->
+<!--                            <div class="layui-inline">-->
+<!--                                <label class="layui-form-label">问卷标题</label>-->
+<!--                                <div class="layui-input-block">-->
+<!--                                    <input type="text" name="qus_title" placeholder="请输入" autocomplete="off" class="layui-input">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="layui-inline">-->
+<!--                                <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">-->
+<!--                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--                <div class="layui-card-body">-->
+<!--                    <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"-->
+<!--                         lay-filter="LAY-index-normcol">-->
+<!--                        <div carousel-item id="LAY-index-normcol">-->
+<!--                            <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                </div>
-            </div>
-        </div>
-    </div>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md6">
             <div class="layui-card">
@@ -92,9 +92,18 @@
 
 </div>
 
+<script src="../../../static/js/jquery-2.1.0.js"></script>
 <script src="../../static/layuiadmin/layui/layui.js"></script>
 <script src="../../static/layuiadmin/common/echarts.js"></script>
+<script src="../../static/js/util/request.js"></script>
+<script src="../../static/js/util/timeAndNumFormat.js"></script>
 <script>
+
+    reqNum = 3;
+    var countGroupByTypeUrl = '/analysis/count_groupby_type';
+    var countUQGroupByTitleUrl = '/analysis/count_uq_groupby_title';
+    var questionnaireCountDaysUrl = '/analysis/questionnaire_count_days';
+
     layui.config({
         base: '../../static/layuiadmin/' //静态资源所在路径
     }).extend({

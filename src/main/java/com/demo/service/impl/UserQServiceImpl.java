@@ -1,7 +1,9 @@
 package com.demo.service.impl;
 
+import com.demo.entity.po.DTCount;
 import com.demo.entity.po.UserQ;
 import com.demo.dao.UserQDao;
+import com.demo.entity.po.UserQCountGroupByQTitle;
 import com.demo.entity.vo.index.TimeVO;
 import com.demo.service.UserQService;
 import com.demo.util.DateUtils;
@@ -88,6 +90,16 @@ public class UserQServiceImpl implements UserQService {
         }
 
         return (nowCount - preCount) / (double) preCount;
+    }
+
+    @Override
+    public List<DTCount> queryDTCount(String startTime, String endTime) {
+        return this.userQDao.queryDTCount(startTime, endTime);
+    }
+
+    @Override
+    public List<UserQCountGroupByQTitle> countGroupByQTitle() {
+        return this.userQDao.countGroupByQTitle();
     }
 
     /**

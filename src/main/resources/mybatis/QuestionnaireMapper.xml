@@ -23,6 +23,11 @@
         <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap type="com.demo.entity.po.QuestionnaireGroupByType" id="qgbt">
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="value" column="value" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <select id="listPage" resultMap="QuestionMap">
         SELECT
             t.id,
@@ -77,6 +82,14 @@
                 and #{endTime} > createtime
             </if>
         </where>
+    </select>
+
+    <select id="countGroupByType" resultMap="qgbt">
+        select qt.name, tmp.count value from
+          (select type_id, count(*) count from
+              questionnaire.questionnaire
+           group by type_id) tmp, questionnaire.question_type qt
+        where tmp.type_id=qt.id
     </select>
 
     <select id="count" resultType="Long">

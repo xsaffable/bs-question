@@ -6,6 +6,7 @@ import com.demo.service.QuestionTypeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +41,17 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     @Override
     public List<QuestionType> queryAllByLimit(int offset, int limit) {
         return this.questionTypeDao.queryAllByLimit(offset, limit);
+    }
+
+    @Override
+    public List<String> queryAll() {
+        QuestionType q = new QuestionType();
+        List<QuestionType> questionTypes = this.questionTypeDao.queryAll(q);
+        List<String> list = new ArrayList<>();
+        questionTypes.forEach(qt -> {
+            list.add(qt.getName());
+        });
+        return list;
     }
 
     /**

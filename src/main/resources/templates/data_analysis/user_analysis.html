@@ -14,9 +14,9 @@
 
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
-        <div class="layui-col-md8">
+        <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">近七天用户量</div>
+                <div class="layui-card-header">近七天新增用户量</div>
                 <div class="layui-card-body">
                     <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"
                          lay-filter="LAY-index-normbar">
@@ -27,22 +27,22 @@
                 </div>
             </div>
         </div>
-        <div class="layui-col-md4">
-            <div class="layui-card">
-                <div class="layui-card-header">用户喜爱度</div>
-                <div class="layui-card-body">
-                    <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"
-                         lay-filter="LAY-index-windline">
-                        <div carousel-item id="user_prefer">
-                            <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--        <div class="layui-col-md4">-->
+<!--            <div class="layui-card">-->
+<!--                <div class="layui-card-header">用户喜爱度</div>-->
+<!--                <div class="layui-card-body">-->
+<!--                    <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"-->
+<!--                         lay-filter="LAY-index-windline">-->
+<!--                        <div carousel-item id="user_prefer">-->
+<!--                            <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
     <div class="layui-row layui-col-space15">
-        <div class="layui-col-md6">
+        <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-header">用户登录次数排行</div>
                 <div class="layui-card-body">
@@ -55,32 +55,42 @@
                 </div>
             </div>
         </div>
-        <div class="layui-col-md6">
-            <div class="layui-card">
-                <div class="layui-card-header">用户填写问卷次数排行</div>
-                <div class="layui-card-body">
-                    <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"
-                         lay-filter="LAY-index-heapcol">
-                        <div carousel-item id="user_qus_rank">
-                            <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
-                        </div>
-                    </div>
+<!--        <div class="layui-col-md6">-->
+<!--            <div class="layui-card">-->
+<!--                <div class="layui-card-header">用户填写问卷次数排行</div>-->
+<!--                <div class="layui-card-body">-->
+<!--                    <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"-->
+<!--                         lay-filter="LAY-index-heapcol">-->
+<!--                        <div carousel-item id="user_qus_rank">-->
+<!--                            <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                </div>
-            </div>
-        </div>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 
 </div>
 
+<script src="../../../static/js/jquery-2.1.0.js"></script>
 <script src="../../static/layuiadmin/layui/layui.js"></script>
 <script src="../../static/layuiadmin/common/echarts.js"></script>
+<script src="../../static/js/util/request.js"></script>
+<script src="../../static/js/util/timeAndNumFormat.js"></script>
 <script>
+
+    reqNum = 2;
+    // 近七天用户量
+    var userCountDaysUrl = '/analysis/user_count_days';
+    var userCountByUNameUrl = '/analysis/user_count_by_uname';
+
+
     layui.config({
         base: '../../static/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'analysis', 'form'], function () {
+    }).use(['index', 'analysis_user', 'form'], function () {
         var $ = layui.$
             ,form = layui.form;
 

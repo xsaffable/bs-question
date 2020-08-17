@@ -3,9 +3,11 @@ package com.demo.service.impl;
 import com.demo.entity.po.SystemResource;
 import com.demo.dao.SystemResourceDao;
 import com.demo.service.SystemResourceService;
+import com.demo.util.DateUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +20,17 @@ import java.util.List;
 public class SystemResourceServiceImpl implements SystemResourceService {
     @Resource
     private SystemResourceDao systemResourceDao;
+
+    @Override
+    public List<SystemResource> countByTime() {
+        List<SystemResource> list = new ArrayList<>();
+        List<String> between12Hours = DateUtils.getBetween12Hours();
+        between12Hours.forEach(d -> {
+            list.add(this.systemResourceDao.countByTime(d));
+        });
+
+        return list;
+    }
 
     /**
      * 通过ID查询单条数据

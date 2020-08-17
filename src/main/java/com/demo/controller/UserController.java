@@ -6,16 +6,17 @@ import com.demo.common.response.R;
 import com.demo.config.SessionFields;
 import com.demo.config.UserFields;
 import com.demo.entity.po.User;
+import com.demo.entity.vo.user.RePwdVO;
 import com.demo.entity.vo.usermanage.UserAddVO;
 import com.demo.entity.vo.usermanage.UserAdminAddVO;
 import com.demo.entity.vo.usermanage.UserConditionVO;
+import com.demo.service.EncService;
 import com.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -29,6 +30,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    @Resource
+    private EncService encService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -193,6 +197,29 @@ public class UserController {
         }
 
         return response;
+    }
+
+    /**
+     * 重置密码
+     * @param vo RePwdVO
+     * @return BaseResponse
+     */
+    @PostMapping("/repwd")
+    public BaseResponse rePwd(HttpServletRequest request, @RequestBody RePwdVO vo) {
+        String username = (String) request.getSession().getAttribute(SessionFields.USERNAME);
+        User user = this.userService.queryByUsername(username);
+        String oldPwd = this.encService.encPwd(vo.getOldPassword());
+        if (oldPwd.equals(user.getPassword())) {
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setPassword(this.encService.encPwd(vo.getPassword()));
+            return updateByUsername(newUser);
+        } else {
+            BaseResponse response = new BaseResponse();
+            response.success("原密码输入有误");
+            return response;
+        }
+
     }
 
 }

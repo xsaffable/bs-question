@@ -1,8 +1,10 @@
 package com.demo.service.impl;
 
+import com.demo.entity.po.UserCountGroupByUName;
 import com.demo.entity.po.UserLogin;
 import com.demo.dao.UserLoginDao;
 import com.demo.entity.vo.index.TimeVO;
+import com.demo.entity.vo.monitor.UserLoginVO;
 import com.demo.service.UserLoginService;
 import com.demo.util.DateUtils;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,11 @@ import java.util.List;
 public class UserLoginServiceImpl implements UserLoginService {
     @Resource
     private UserLoginDao userLoginDao;
+
+    @Override
+    public List<UserCountGroupByUName> countGroupByUName() {
+        return this.userLoginDao.countGroupByUName();
+    }
 
     @Override
     public Long count(String startTime, String endTime) {
@@ -137,5 +144,12 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Override
     public boolean deleteById(String id) {
         return this.userLoginDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public List<UserLoginVO> listByPage(int pageIndex, int pageSize) {
+        int offset = (pageIndex - 1) * pageSize;
+        int size = pageSize;
+        return this.userLoginDao.listByPage(offset, size);
     }
 }

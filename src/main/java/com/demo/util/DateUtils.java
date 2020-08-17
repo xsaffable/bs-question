@@ -1,5 +1,7 @@
 package com.demo.util;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import com.demo.entity.vo.index.TimeVO;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +36,34 @@ public class DateUtils {
             date = sdf.format(calendar.getTime());
             timeVO.setEndTime(date);
             list.add(timeVO);
+        }
+        return list;
+    }
+
+    /**
+     * 获取最近 7 天的数据
+     * @return List<String>
+     */
+    public static List<String> getBetween7Days() {
+        List<String> list = new ArrayList<>();
+        DateTime now = DateUtil.date();
+        for (int i = 7; i >= 1; i--) {
+            String dateStr = DateUtil.offsetDay(now, -i).toString("yyyy-MM-dd");
+            list.add(dateStr);
+        }
+        return list;
+    }
+
+    /**
+     * 获取最近 12 小时的数据
+     * @return List<String>
+     */
+    public static List<String> getBetween12Hours() {
+        List<String> list = new ArrayList<>();
+        DateTime now = DateUtil.date();
+        for (int i = 12; i >= 1; i--) {
+            String dateStr = DateUtil.offsetHour(now, -i).toString("yyyy-MM-dd HH");
+            list.add(dateStr);
         }
         return list;
     }

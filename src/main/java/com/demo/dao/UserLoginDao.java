@@ -1,6 +1,8 @@
 package com.demo.dao;
 
+import com.demo.entity.po.UserCountGroupByUName;
 import com.demo.entity.po.UserLogin;
+import com.demo.entity.vo.monitor.UserLoginVO;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
  * @since 2020-07-10 09:36:57
  */
 public interface UserLoginDao {
+
+    List<UserCountGroupByUName> countGroupByUName();
 
     /**
      * 统计总登录数
@@ -77,5 +81,13 @@ public interface UserLoginDao {
      * @return 影响行数
      */
     int deleteById(String id);
+
+    /**
+     * 分页查询
+     * @param offset 查询起始偏移量
+     * @param size 查询的条数
+     * @return List<UserLoginVO>
+     */
+    List<UserLoginVO> listByPage(int offset, int size);
 
 }

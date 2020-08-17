@@ -3,16 +3,19 @@ package com.demo.service.impl;
 import com.demo.common.response.R;
 import com.demo.config.SessionFields;
 import com.demo.config.UserFields;
+import com.demo.entity.po.TimeCount;
 import com.demo.entity.po.User;
 import com.demo.dao.UserDao;
 import com.demo.entity.vo.login.UserRememberVO;
 import com.demo.entity.vo.login.UserVO;
 import com.demo.service.EncService;
 import com.demo.service.UserService;
+import com.demo.util.DateUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +31,17 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private EncService encService;
+
+    @Override
+    public List<Long> countByDays() {
+        List<String> between7Days = DateUtils.getBetween7Days();
+        List<Long> counts = new ArrayList<>();
+        for (int i = 0; i < between7Days.size(); i++) {
+            Long count = this.userDao.countByDays(between7Days.get(i));
+            counts.add(count);
+        }
+        return counts;
+    }
 
     /**
      * 通过ID查询单条数据

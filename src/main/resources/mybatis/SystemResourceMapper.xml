@@ -52,9 +52,15 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into questionnaire.system_resource(cpu_rate, memory_rate, createtime, updatetime)
-        values (#{cpuRate}, #{memoryRate}, #{createtime}, #{updatetime})
+        insert into questionnaire.system_resource(id, cpu_rate, memory_rate)
+        values (#{id}, #{cpuRate}, #{memoryRate})
     </insert>
+
+    <select id="countByTime" resultMap="SystemResourceMap">
+        select round(avg(cpu_rate)) cpu_rate, round(avg(memory_rate)) memory_rate from
+          questionnaire.system_resource
+        where left(createtime, 13)=#{time}
+    </select>
 
     <!--通过主键修改数据-->
     <update id="update">

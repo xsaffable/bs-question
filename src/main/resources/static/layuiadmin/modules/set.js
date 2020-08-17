@@ -63,7 +63,11 @@ layui.define(['form', 'upload'], function(exports){
 
   //设置密码
   form.on('submit(setmypass)', function(obj){
-    layer.msg(JSON.stringify(obj.field));
+
+    reqNum = 1;
+    requestAsync("/user/repwd", JSON.stringify(obj.field), function (data) {
+      layer.msg(data.msg || "修改成功", { icon: 6 });
+    });
     
     //提交修改
     /*

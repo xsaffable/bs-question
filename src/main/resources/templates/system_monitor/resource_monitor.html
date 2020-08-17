@@ -48,14 +48,22 @@
 
 </div>
 
+<script src="../../../static/js/jquery-2.1.0.js"></script>
 <script src="../../static/layuiadmin/layui/layui.js"></script>
 <script src="../../static/layuiadmin/common/echarts.js"></script>
+<script src="../../static/js/util/request.js"></script>
+<script src="../../static/js/util/timeAndNumFormat.js"></script>
 <script>
+
+    reqNum = 1;
+    var systemUseRateUrl = '/monitor/system_use_rate';
+
+
     layui.config({
         base: '../../static/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'analysis', 'form'], function () {
+    }).use(['index', 'analysis_resource', 'form'], function () {
         var $ = layui.$
             ,form = layui.form;
 

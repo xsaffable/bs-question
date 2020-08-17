@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface SystemResourceDao {
 
+    SystemResource countByTime(String time);
+
     /**
      * 通过ID查询单条数据
      *

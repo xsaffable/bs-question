@@ -28,6 +28,8 @@ public interface QuestionTypeService {
      */
     List<QuestionType> queryAllByLimit(int offset, int limit);
 
+    List<String> queryAll();
+
     /**
      * 新增数据
      *

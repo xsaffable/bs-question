@@ -150,7 +150,7 @@ layui.define(function(exports) {
                     }
                 },
                 legend: {
-                    data:['直接访问', '邮件营销','联盟广告','视频广告','搜索引擎']
+                    data:[]
                 },
                 calculable : true,
                 xAxis : [
@@ -165,52 +165,77 @@ layui.define(function(exports) {
                     }
                 ],
                 series : [
-                    {
-                        name:'直接访问',
-                        type:'bar',
-                        stack: '总量',
-                        itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
-                        data:[320, 302, 301, 334, 390, 330, 320]
-                    },
-                    {
-                        name:'邮件营销',
-                        type:'bar',
-                        stack: '总量',
-                        itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
-                        data:[120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name:'联盟广告',
-                        type:'bar',
-                        stack: '总量',
-                        itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
-                        data:[220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name:'视频广告',
-                        type:'bar',
-                        stack: '总量',
-                        itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
-                        data:[150, 212, 201, 154, 190, 330, 410]
-                    },
-                    {
-                        name:'搜索引擎',
-                        type:'bar',
-                        stack: '总量',
-                        itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
-                        data:[820, 832, 901, 934, 1290, 1330, 1320]
-                    }
+                    // {
+                    //     name:'',
+                    //     type:'bar',
+                    //     stack: '总量',
+                    //     itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+                    //     data:[]
+                    // },
+                    // {
+                    //     name:'',
+                    //     type:'bar',
+                    //     stack: '总量',
+                    //     itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+                    //     data:[]
+                    // },
+                    // {
+                    //     name:'',
+                    //     type:'bar',
+                    //     stack: '总量',
+                    //     itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+                    //     data:[]
+                    // },
+                    // {
+                    //     name:'',
+                    //     type:'bar',
+                    //     stack: '总量',
+                    //     itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+                    //     data:[]
+                    // }
                 ]
             }
         ],
         elemheapbar = $('#LAY-index-heapbar').children('div'),
         renderheapbar = function(index){
             echheapbar[index] = echarts.init(elemheapbar[index], layui.echartsTheme);
-            echheapbar[index].setOption(heapbar[index]);
+            // echheapbar[index].setOption(heapbar[index]);
             window.onresize = echheapbar[index].resize;
         };
         if(!elemheapbar[0]) return;
         renderheapbar(0);
+
+        var pre7BetweenDate = getPre7BetweenDate();
+        var dateArr = pre7BetweenDate.dateArr;
+        var dateYMDStr = pre7BetweenDate.dateYMDStr;
+        var dates = [];
+        for (var i in dateArr) {
+            dates.push(dateArr[i].substring(5));
+        }
+        requestAsync('/index/all_qt', null, function (data) {
+            heapbar[0]['legend']['data'] = data.data;
+            heapbar[0]['yAxis'][0]['data'] = dates;
+            var heads = [];
+            requestAsync('/index/dtcounts', JSON.stringify({"startTime": dateYMDStr[0], "endTime": dateYMDStr[dateYMDStr.length-1]}), function (data2) {
+                var types = data.data;
+                for (var i in types) {
+                    var type = types[i];
+                    var r = data2.data[type];
+                    if (r != undefined) {
+                        heapbar[0]['series'].push({
+                            name: type,
+                            type: 'bar',
+                            stack: '总量',
+                            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+                            data: r
+                        });
+                        heads.push(type);
+                    }
+
+                }
+                echheapbar[0].setOption(heapbar[0]);
+            })
+        });
 
     });
 

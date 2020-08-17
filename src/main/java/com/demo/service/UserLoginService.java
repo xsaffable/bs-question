@@ -1,6 +1,8 @@
 package com.demo.service;
 
+import com.demo.entity.po.UserCountGroupByUName;
 import com.demo.entity.po.UserLogin;
+import com.demo.entity.vo.monitor.UserLoginVO;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
  */
 public interface UserLoginService {
 
+    List<UserCountGroupByUName> countGroupByUName();
 
     Long count(String startTime, String endTime);
 
@@ -61,5 +64,7 @@ public interface UserLoginService {
      * @return 是否成功
      */
     boolean deleteById(String id);
+
+    List<UserLoginVO> listByPage(int pageIndex, int pageSize);
 
 }

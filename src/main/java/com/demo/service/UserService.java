@@ -1,6 +1,7 @@
 package com.demo.service;
 
 import com.demo.common.response.R;
+import com.demo.entity.po.TimeCount;
 import com.demo.entity.po.User;
 import com.demo.entity.vo.login.UserRememberVO;
 import org.apache.ibatis.annotations.Param;
@@ -14,6 +15,8 @@ import java.util.List;
  * @since 2020-07-10 09:36:57
  */
 public interface UserService {
+
+    List<Long> countByDays();
 
     /**
      * 通过ID查询单条数据

@@ -2,18 +2,17 @@ package com.demo.controller;
 
 import com.demo.common.response.BaseResponse;
 import com.demo.common.response.R;
+import com.demo.entity.po.DTCount;
 import com.demo.entity.vo.index.TimeVO;
-import com.demo.service.QuestionnaireService;
-import com.demo.service.UserLoginService;
-import com.demo.service.UserQService;
-import com.demo.service.UserService;
+import com.demo.service.*;
+import com.demo.util.DateUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author affable
@@ -35,6 +34,9 @@ public class IndexController {
 
     @Resource
     private UserQService userQService;
+
+    @Resource
+    private QuestionTypeService questionTypeService;
 
     /**
      * 访问量
@@ -147,6 +149,62 @@ public class IndexController {
         double incRate = this.userQService.incRate();
         r.success("查询成功", String.format("%.0f", incRate * 100));
         return r;
+    }
+
+    /**
+     * 获取所有的问卷类型
+     * @return BaseResponse
+     */
+    @PostMapping("/all_qt")
+    public BaseResponse getAllQType() {
+        R<List<String>> r = new R<>();
+        List<String> strings = this.questionTypeService.queryAll();
+        r.success("查询成功", strings);
+        return r;
+    }
+
+    @PostMapping("/dtcounts")
+    public BaseResponse getDTCounts(@RequestBody TimeVO timeVO) {
+        R<Map<String, List<Integer>>> r = new R<>();
+        List<DTCount> dtCounts = this.userQService.queryDTCount(timeVO.getStartTime(), timeVO.getEndTime());
+        List<String> days = DateUtils.getBetween7Days();
+        // 类别 -> 所有时间对应的 count 组成的 list
+        Map<String, List<Tuple2<String, Integer>>> map = new HashMap<>(16);
+        dtCounts.forEach(dtCount -> {
+            List<Tuple2<String, Integer>> value = map.getOrDefault(dtCount.getType(), new ArrayList<>());
+            value.add(new Tuple2<>(dtCount.getDateStr(), dtCount.getCount()));
+            map.put(dtCount.getType(), value);
+        });
+        // 结果 map
+        Map<String, List<Integer>> resultMap = new HashMap<>(map.size());
+        map.forEach((k, v) -> {
+            Integer[] ss = new Integer[days.size()];
+            Arrays.fill(ss, 0);
+            v.forEach(t2 -> {
+                int index = days.indexOf(t2._1());
+                ss[index] = t2._2();
+            });
+            resultMap.put(k, Arrays.asList(ss));
+        });
+        r.success("查询成功", resultMap);
+
+        return r;
+
+    }
+
+    class Tuple2<U, V> {
+        private U t1;
+        private V t2;
+
+        public Tuple2(U t1, V t2) {
+            this.t1 = t1;
+            this.t2 = t2;
+        }
+
+        public U _1() { return t1; }
+
+        public V _2() { return t2; }
+
     }
     
 }

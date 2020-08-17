@@ -2,6 +2,8 @@ package com.demo.service;
 
 import com.demo.entity.po.Question;
 import com.demo.entity.po.Questionnaire;
+import com.demo.entity.po.QuestionnaireGroupByType;
+
 import java.util.List;
 
 /**
@@ -26,7 +28,11 @@ public interface QuestionnaireService {
 
     List<Long> countMonth();
 
+    List<Long> countDay();
+
     double incRate();
+
+    List<QuestionnaireGroupByType> countGroupByType();
 
     /**
      * 通过ID查询单条数据

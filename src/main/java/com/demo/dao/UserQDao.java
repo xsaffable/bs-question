@@ -1,6 +1,8 @@
 package com.demo.dao;
 
+import com.demo.entity.po.DTCount;
 import com.demo.entity.po.UserQ;
+import com.demo.entity.po.UserQCountGroupByQTitle;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -31,6 +33,10 @@ public interface UserQDao {
 
 
     Long countByTime(String startTime, String endTime);
+
+    List<DTCount> queryDTCount(String startTime, String endTime);
+
+    List<UserQCountGroupByQTitle> countGroupByQTitle();
 
     /**
      * 通过实体作为筛选条件查询

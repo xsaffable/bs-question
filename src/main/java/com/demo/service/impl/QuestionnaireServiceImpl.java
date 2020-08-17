@@ -3,6 +3,7 @@ package com.demo.service.impl;
 import com.demo.entity.po.Question;
 import com.demo.entity.po.Questionnaire;
 import com.demo.dao.QuestionnaireDao;
+import com.demo.entity.po.QuestionnaireGroupByType;
 import com.demo.entity.vo.index.TimeVO;
 import com.demo.service.QuestionnaireService;
 import com.demo.util.DateUtils;
@@ -50,6 +51,23 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
+    public List<Long> countDay() {
+        List<Long> counts = new ArrayList<>();
+        List<String> between7Days = DateUtils.getBetween7Days();
+        for (int i = 0; i < between7Days.size(); i++) {
+            if (i <= (between7Days.size()-2)) {
+                Long count = countByTime(between7Days.get(i), between7Days.get(i + 1));
+                counts.add(count);
+            } else {
+                Long count = countByTime(between7Days.get(i), "9999-99-99");
+                counts.add(count);
+            }
+
+        }
+        return counts;
+    }
+
+    @Override
     public List<Long> countMonth() {
         List<Long> list = new ArrayList<>();
         List<TimeVO> yearMonth = DateUtils.getYearMonth();
@@ -89,6 +107,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         }
 
         return (nowCount - preCount) / (double) preCount;
+    }
+
+    @Override
+    public List<QuestionnaireGroupByType> countGroupByType() {
+        return questionnaireDao.countGroupByType();
     }
 
     /**
