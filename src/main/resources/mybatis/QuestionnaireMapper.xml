@@ -61,6 +61,9 @@
                         <if test="question.title != null and question.title != ''">
                             and q.title = #{question.title}
                         </if>
+                        <if test="question.state != null and question.state != ''">
+                            and q.state = #{question.state}
+                        </if>
                     </where>
                 ORDER BY
                     q.createtime DESC
@@ -117,6 +120,9 @@
             </if>
             <if test="title != null and title != ''">
                 and q.title = #{title}
+            </if>
+            <if test="state != null and state != ''">
+                and q.state = #{state}
             </if>
         </where>
         ) t

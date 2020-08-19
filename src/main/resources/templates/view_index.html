@@ -45,47 +45,47 @@
                                         热点问卷
                                     </h3>
                                 </div>
-                                <div class="layui-card-body">
-                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
-                                        <div class="meida-left">
-                                        </div>
-                                        <div class="meida-right">
-                                            <p>Hugo</p>
-                                            <div class="layui-elip" style="width: 220px">
-                                                人生是一场修行,不要轻易交白卷
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
-                                        <div class="meida-left">
-                                        </div>
-                                        <div class="meida-right">
-                                            <p>Hugo</p>
-                                            <div class="layui-elip" style="width: 220px">
-                                                人生是一场修行,不要轻易交白卷
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
-                                        <div class="meida-left">
-                                        </div>
-                                        <div class="meida-right">
-                                            <p>Hugo</p>
-                                            <div class="layui-elip" style="width: 220px">
-                                                人生是一场修行,不要轻易交白卷
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
-                                        <div class="meida-left">
-                                        </div>
-                                        <div class="meida-right">
-                                            <p>Hugo</p>
-                                            <div class="layui-elip" style="width: 220px">
-                                                人生是一场修行,不要轻易交白卷
-                                            </div>
-                                        </div>
-                                    </a>
+                                <div class="layui-card-body" id="hotqs">
+<!--                                    <a href="javascript:;" class="layadmin-privateletterlist-item">-->
+<!--                                        <div class="meida-left">-->
+<!--                                        </div>-->
+<!--                                        <div class="meida-right">-->
+<!--                                            <p>Hugo</p>-->
+<!--                                            <div class="layui-elip" style="width: 220px">-->
+<!--                                                人生是一场修行,不要轻易交白卷-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                    <a href="javascript:;" class="layadmin-privateletterlist-item">-->
+<!--                                        <div class="meida-left">-->
+<!--                                        </div>-->
+<!--                                        <div class="meida-right">-->
+<!--                                            <p>Hugo</p>-->
+<!--                                            <div class="layui-elip" style="width: 220px">-->
+<!--                                                人生是一场修行,不要轻易交白卷-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                    <a href="javascript:;" class="layadmin-privateletterlist-item">-->
+<!--                                        <div class="meida-left">-->
+<!--                                        </div>-->
+<!--                                        <div class="meida-right">-->
+<!--                                            <p>Hugo</p>-->
+<!--                                            <div class="layui-elip" style="width: 220px">-->
+<!--                                                人生是一场修行,不要轻易交白卷-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                    <a href="javascript:;" class="layadmin-privateletterlist-item">-->
+<!--                                        <div class="meida-left">-->
+<!--                                        </div>-->
+<!--                                        <div class="meida-right">-->
+<!--                                            <p>Hugo</p>-->
+<!--                                            <div class="layui-elip" style="width: 220px">-->
+<!--                                                人生是一场修行,不要轻易交白卷-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
                                 </div>
                             </div>
                         </div>
@@ -141,12 +141,14 @@
     // 公告列表展示
     var noticeListUrl = '/view_index/notice_list';
     // 问卷列表展示
-    var questionnaireListUrl = '/basic/q/list';
+    var questionnaireListUrl = '/view_index/q/list';
+    // 热点问卷展示
+    var hotQUrl = '/view_index/hotq';
 
     var defaultPageIndex = 1;
     var defaultPageSize = 5;
 
-    reqNum = 2;
+    reqNum = 3;
 
     // 展示问卷
     function showQuestionnaire(id) {
@@ -193,34 +195,51 @@
 
         // 初始化
         $('#questionnaires').html('');
+        $('#hotqs').html('');
 
-        var count = 0;
+        requestAsync(hotQUrl, null, function (data) {
+            for (var i in data.data) {
+                var d = data.data[i];
+                var html =
+                    '<a onclick="showQuestionnaire(\''+d["qid"]+'\')" href="javascript:;" class="layadmin-privateletterlist-item">\n' +
+                    '    <div class="meida-left">\n' +
+                    '    </div>\n' +
+                    '    <div class="meida-right">\n' +
+                    '        <p>'+d["count"]+'人已填写</p>\n' +
+                    '        <div class="layui-elip" style="width: 220px">\n' +
+                    '            问卷名: '+d["qtitle"]+'\n' +
+                    '        </div>\n' +
+                    '    </div>\n' +
+                    '</a>';
+                $('#hotqs').append(html);
+            }
 
-        var param = {"page": defaultPageIndex, "limit": defaultPageSize};
+
+        });
+
+
+        var param = {"page": defaultPageIndex, "limit": defaultPageSize, "state": 1};
         requestAsync(questionnaireListUrl, JSON.stringify(param), function (data) {
             for (var i in data.data) {
                 var questionnaire = data.data[i];
-                if (questionnaire["state"] == 1) {
-                    count += 1;
-                    var html =
-                        '<div class="caller-item">\n' +
-                        '    <img src="" alt="" class="caller-img caller-fl">\n' +
-                        '    <div class="caller-main caller-fl">\n' +
-                        '        <p><strong>发布人: '+questionnaire["username"]+'</strong> <em>'+questionnaire["createtime"]+'</em></p>\n' +
-                        '        <p class="caller-adds"><i class="layui-icon layui-icon-file-b"></i>'+questionnaire["title"]+'</p>\n' +
-                        '    </div>\n' +
-                        '    <button onclick="showQuestionnaire(\''+questionnaire["id"]+'\')" class="layui-btn layui-btn-sm layui-btn layui-btn-primary caller-fr">\n' +
-                        '        填写\n' +
-                        '    </button>\n' +
-                        '</div>';
-                    $('#questionnaires').append(html);
-                }
+                var html =
+                    '<div class="caller-item">\n' +
+                    '    <img src="" alt="" class="caller-img caller-fl">\n' +
+                    '    <div class="caller-main caller-fl">\n' +
+                    '        <p><strong>发布人: '+questionnaire["username"]+'</strong> <em>'+questionnaire["createtime"]+'</em></p>\n' +
+                    '        <p class="caller-adds"><i class="layui-icon layui-icon-file-b"></i>'+questionnaire["title"]+'</p>\n' +
+                    '    </div>\n' +
+                    '    <button onclick="showQuestionnaire(\''+questionnaire["id"]+'\')" class="layui-btn layui-btn-sm layui-btn layui-btn-primary caller-fr">\n' +
+                    '        填写\n' +
+                    '    </button>\n' +
+                    '</div>';
+                $('#questionnaires').append(html);
 
             }
 
             laypage.render({
                 elem: 'demo1',
-                count: count,
+                count: data.count,
                 limits: [5, 10, 15],
                 limit: 5,
                 layout: ['prev', 'page', 'next', 'limit', 'count'],
@@ -231,7 +250,26 @@
 
                     //首次不执行
                     if(!first){
-                        // TODO: 暂时没有写分页
+                        param['page'] = obj.curr;
+                        param['limit'] = obj.limit;
+                        $('#questionnaires').html('');
+                        requestAsync(questionnaireListUrl, JSON.stringify(param), function (data) {
+                            for (var i in data.data) {
+                                var questionnaire = data.data[i];
+                                var html =
+                                    '<div class="caller-item">\n' +
+                                    '    <img src="" alt="" class="caller-img caller-fl">\n' +
+                                    '    <div class="caller-main caller-fl">\n' +
+                                    '        <p><strong>发布人: '+questionnaire["username"]+'</strong> <em>'+questionnaire["createtime"]+'</em></p>\n' +
+                                    '        <p class="caller-adds"><i class="layui-icon layui-icon-file-b"></i>'+questionnaire["title"]+'</p>\n' +
+                                    '    </div>\n' +
+                                    '    <button onclick="showQuestionnaire(\''+questionnaire["id"]+'\')" class="layui-btn layui-btn-sm layui-btn layui-btn-primary caller-fr">\n' +
+                                    '        填写\n' +
+                                    '    </button>\n' +
+                                    '</div>';
+                                $('#questionnaires').append(html);
+                            }
+                        });
                     }
                 }
             });

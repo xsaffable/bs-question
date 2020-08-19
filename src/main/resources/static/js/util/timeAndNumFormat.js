@@ -48,7 +48,7 @@ function getRatio(num, all) {
     if (all == 0) {
         return 0;
     }
-    return (num / all).toFixed(2) * 100;
+    return (num / all * 100).toFixed(2);
 }
 
 /**

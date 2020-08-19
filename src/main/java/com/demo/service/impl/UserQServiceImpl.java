@@ -1,6 +1,7 @@
 package com.demo.service.impl;
 
 import com.demo.entity.po.DTCount;
+import com.demo.entity.po.HotQuestionnaire;
 import com.demo.entity.po.UserQ;
 import com.demo.dao.UserQDao;
 import com.demo.entity.po.UserQCountGroupByQTitle;
@@ -26,6 +27,11 @@ import java.util.List;
 public class UserQServiceImpl implements UserQService {
     @Resource
     private UserQDao userQDao;
+
+    @Override
+    public List<HotQuestionnaire> hotQuestionnaires() {
+        return this.userQDao.hotQuestionnaires();
+    }
 
     /**
      * 通过ID查询单条数据

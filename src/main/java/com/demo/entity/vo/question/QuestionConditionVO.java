@@ -21,4 +21,6 @@ public class QuestionConditionVO extends BaseVO {
 
     private String qType;
 
+    private Integer state;
+
 }

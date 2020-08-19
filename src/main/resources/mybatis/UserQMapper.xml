@@ -23,6 +23,19 @@
         <result property="count" column="count" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="hq" type="com.demo.entity.po.HotQuestionnaire">
+        <result property="qid" column="qid" jdbcType="VARCHAR"/>
+        <result property="qTitle" column="q_title" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="INTEGER" javaType="long"/>
+    </resultMap>
+
+    <select id="hotQuestionnaires" resultMap="hq">
+        SELECT qid,q_title, count(*) count FROM user_q
+        GROUP BY qid,q_title
+        ORDER BY count DESC
+        LIMIT 10
+    </select>
+
     <!--查询单个-->
     <select id="queryById" resultMap="UserQMap">
         select

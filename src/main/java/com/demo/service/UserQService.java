@@ -1,6 +1,7 @@
 package com.demo.service;
 
 import com.demo.entity.po.DTCount;
+import com.demo.entity.po.HotQuestionnaire;
 import com.demo.entity.po.UserQ;
 import com.demo.entity.po.UserQCountGroupByQTitle;
 
@@ -13,6 +14,8 @@ import java.util.List;
  * @since 2020-07-10 09:36:57
  */
 public interface UserQService {
+
+    List<HotQuestionnaire> hotQuestionnaires();
 
     /**
      * 通过ID查询单条数据
