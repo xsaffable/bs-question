@@ -97,7 +97,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
         Long preCount = this.questionnaireDao.countByTime(preStartDate, preEndDate);
         if (preCount == 0) {
-            return 0;
+            return 1;
         }
         if (nowCount - preCount <= 0) {
             return 0;

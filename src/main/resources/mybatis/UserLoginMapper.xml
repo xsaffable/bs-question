@@ -29,10 +29,10 @@
         from questionnaire.user_login
         <where>
             <if test="startTime != null">
-                and createtime >= #{startTime}
+                and left(createtime, 10) >= #{startTime}
             </if>
             <if test="endTime != null">
-                and #{endTime} > createtime
+                and #{endTime} >= left(createtime, 10)
             </if>
         </where>
     </select>

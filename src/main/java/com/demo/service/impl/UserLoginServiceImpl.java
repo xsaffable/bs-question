@@ -76,7 +76,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
         Long preCount = this.userLoginDao.count(preStartDate, preEndDate);
         if (preCount == 0) {
-            return 0;
+            return 1;
         }
         if (nowCount - preCount <= 0) {
             return 0;
